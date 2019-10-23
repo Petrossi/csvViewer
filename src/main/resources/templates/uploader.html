@@ -4,8 +4,9 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link href="https://fineuploader.com/source/fine-uploader-new.css" rel="stylesheet">
-    <script src="https://fineuploader.com/source/all.fine-uploader.min.js"></script>
+    <link href="@{/static/stylesheets/fine-uploader-new.css}" rel="stylesheet">
+    <script th:src="@{/static/javascripts/all.fine-uploader.min.js}"></script>
+
     <script type="text/template" id="qq-template-manual-trigger">
         <div class="qq-uploader-selector qq-uploader" qq-drop-area-text="Drop files here">
             <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
@@ -95,8 +96,7 @@
     <title>Fine Uploader Manual Upload Trigger Demo</title>
 </head>
 <body>
-<!-- Fine Uploader DOM Element
-====================================================================== -->
+
 <div id="fine-uploader-manual-trigger"></div>
 
 <script th:src="@{/static/javascripts/fineUploader.js}"></script>
