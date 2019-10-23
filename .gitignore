@@ -1,0 +1,65 @@
+# Created by .ignore support plugin (hsz.mobi)
+### Java template
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.ear
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+
+src/test/
+.idea
+.idea/
+/target
+.idea/dataSources.local.xml
+.idea/dataSources.xml
+.idea/misc.xml
+.idea/sqldialects.xml
+.idea/workspace.xml
+rabbitWebCrawer.iml
+target/classes/com/crawler/rabbit/service/crawler/UrlWorkerService$1.class
+target/classes/com/crawler/rabbit/service/crawler/UrlWorkerService.class
+target/classes/com/crawler/rabbit/service/DBImporterService.class
+.idea/dataSources.ids
+.idea/kotlinc.xml
+.idea/libraries/Maven__xml_apis_xml_apis_1_0_b2.xml
+target/classes/com/crawler/service/FinalPageService.class
+target/classes/com/crawler/service/DomainService.class
+target/classes/com/crawler/service/CrawlerService.class
+target/classes/com/crawler/rabbit/service/ResultImporter.class
+target/classes/com/crawler/rabbit/service/ResultImporter$1.class
+target/classes/com/crawler/rabbit/service/Publisher.class
+target/classes/log4j.properties
+target/classes/com/crawler/utils/Utils.class
+target/classes/com/crawler/utils/DomainStorage.class
+target/classes/com/crawler/service/StatisticService.class
+target/classes/com/crawler/service/PageService.class
+target/classes/com/crawler/rabbit/service/crawler/QueueMakerService.class
+target/classes/com/crawler/rabbit/parser/ParserService.class
+target/classes/com/crawler/model/Page.class
+target/classes/com/crawler/model/Domain.class
+target/classes/com/crawler/Application$1.class
+target/classes/com/crawler/Application.class
+target/classes/com/crawler/common/Constants.class
+target/classes/com/crawler/common/Utils.class
+target/classes/com/crawler/controller/AppController.class
+target/classes/com/crawler/controller/CrawlerController.class
+target/classes/com/crawler/controller/StatisticController.class
+target/classes/com/crawler/dao/DomainRepository.class
+*.class
+target/classes/application.properties
+target/classes/com/crawler/rabbit/service/crawler/UrlWorkerManagerService.class
+*.class
+*.class
+*.class
+.idea
+.target
+.target
+b96ea8f2-f83b-4bec-ad2c-29d9a63fd6fb.uml
+docker/postgres/
+
+/docker/crawler_postgres/data/
+/docker/crawler_postgres/data_free/

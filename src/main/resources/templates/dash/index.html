@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <script th:src="@{/static/javascripts/csvparse.js}"></script>
+    <script src="http://www.convertcsv.com/json2.js"></script>
+    <script src="http://www.convertcsv.com/js/blob.js"></script>
+    <script src="http://www.convertcsv.com/js/filesaver.js"></script>
+    <script src="http://www.convertcsv.com/js/storagesup.js"></script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.9.1/underscore-min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js" type="text/javascript"></script>
+    <script src="http://www.convertcsv.com/js/grid/jquery.handsontable.full.js"></script>
+    <script src="http://www.convertcsv.com/js/spin.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/alasql/0.3.8/alasql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.11.5/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/moment@2.20.1/moment.js"></script>
+
+    <link rel="stylesheet" media="screen" href="http://www.convertcsv.com/js/grid/jquery.handsontable.full.css"></link>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"></link>
+    <link rel="stylesheet" href="http://www.convertcsv.com/js/custom.css?v=1"></link>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="form-group">
+                    <div class="form-group">
+                        <input type="file" id="f1" class="form-control" onchange="loadTextFile(this)" title="Choose a local CSV file"/>
+                    </div>
+                    <textarea rows="1" id="txt1" style="display: none"></textarea>
+                    <input type="button" id="btnRun" onclick="reprocessCsv()" style="display: none"/>
+
+                    <div id="divSpinner"></div>
+                    <div id="dataTable" style="overflow: auto; vertical-align: top;" class="handsontable"></div>
+                </div>
+                <br/>
+            </div>
+            <hr/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div class="panel-footer">
+            </div>
+        </div>
+    </div>
+    <script th:src="@{/static/javascripts/utils.js}"></script>
+    <script th:src="@{/static/javascripts/main.js}"></script>
+</body>
+</html>

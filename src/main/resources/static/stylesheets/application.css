@@ -1,0 +1,16 @@
+body {
+    padding-top: 50px;
+}
+ul.navbar-right{
+    margin-right: 0px;
+}
+.starter-template {
+    padding: 5px 20px;
+    text-align: left;
+}
+.top-margin {
+    margin-top: 15px;
+}
+footer{
+    padding-top: 10px;
+}

@@ -1,0 +1,108 @@
+<html layout:decorator="layout" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<div layout:fragment="content">
+    <div class="col-sm-12">
+        <h1 class="text-left">Создать новое оповещение</h1>
+        <hr />
+    </div>
+    <div class="col-sm-12">
+        <div class="zk-layout">
+            <div class="zk-layout__body ">
+                <div class="zk-page">
+                    <div class="zk-search">
+                        <form th:action="@{/filter/create}" th:object="${filter}" class="zk-search__form" method="get">
+                            <input type="hidden" name="type" th:value="1"></input>
+                            <div class="form-group">
+                                <label class="pull-left">назовите оповещение</label>
+                                <textarea rows="3" class="form-control" style="resize: none" th:field="*{description}"></textarea>
+                                <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" th:class="help-block">Description is a required field!</span>
+                            </div>
+                            <!--<div class="form-group">-->
+                                <!--<label class="pull-left">Update interval in minutes</label>-->
+                                <!--<input type="number" class="form-control" th:field="*{updateIntervalMin}" />-->
+                            <!--</div>-->
+
+                            <!--<div class="form-group">-->
+                                <!--<label class="pull-left">Max deep</label>-->
+                                <!--<input type="number" class="form-control" th:field="*{parsingDeep}" />-->
+                            <!--</div>-->
+
+                            <div class="zk-search-field">
+                                <div class="zk-search-field__item">
+                                    <search id="q" name="q" placeholder="Назва товару, послуги або номер закупівлі"></search>
+                                </div>
+                                <div class="zk-search-field__item zk-search-field__item_width_200">
+                                    <button class="zk-button zk-button_theme_green zk-button_type_full_width"
+                                            id="find"
+                                            name="find"
+                                            type="submit"
+                                    >
+                                        Создать
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="zk-search__filters-wrapper">
+                                <show-hide class="zk-search__more-btn" dom-elem-id="js-additional-filters" text="Ще фільтри"
+                                           toggle-class="zk-search__filters_state_hidden"></show-hide>
+                                <div class="zk-search__filters zk-search__filters_state_hidden"
+                                     id="js-additional-filters"
+                                >
+                                    <dropdown add-class="zk-drop-down_width_200" button="Підтвердити"
+                                              choices="[{&#34;value&#34;: 0, &#34;label&#34;: &#34;\u043f\u0435\u0440\u0456\u043e\u0434 \u0443\u0442\u043e\u0447\u043d\u0435\u043d\u044c&#34;}, {&#34;value&#34;: 1, &#34;label&#34;: &#34;\u0441\u043a\u0430\u0441\u043e\u0432\u0430\u043d\u0430&#34;}, {&#34;value&#34;: 2, &#34;label&#34;: &#34;\u043f\u0440\u0438\u0439\u043e\u043c \u043f\u0440\u043e\u043f\u043e\u0437\u0438\u0446\u0456\u0439&#34;}, {&#34;value&#34;: 3, &#34;label&#34;: &#34;\u0430\u0443\u043a\u0446\u0456\u043e\u043d&#34;}, {&#34;value&#34;: 4, &#34;label&#34;: &#34;\u043a\u0432\u0430\u043b\u0456\u0444\u0456\u043a\u0430\u0446\u0456\u044f&#34;}, {&#34;value&#34;: 5, &#34;label&#34;: &#34;\u043f\u0440\u043e\u043f\u043e\u0437\u0438\u0446\u0456\u0457 \u0440\u043e\u0437\u0433\u043b\u044f\u043d\u0443\u0442\u043e&#34;}, {&#34;value&#34;: 6, &#34;label&#34;: &#34;\u0437\u0430\u0432\u0435\u0440\u0448\u0435\u043d\u0430&#34;}, {&#34;value&#34;: 7, &#34;label&#34;: &#34;\u0437\u0430\u043a\u0443\u043f\u0456\u0432\u043b\u044f \u043d\u0435 \u0432\u0456\u0434\u0431\u0443\u043b\u0430\u0441\u044c&#34;}, {&#34;value&#34;: 10, &#34;label&#34;: &#34;\u043f\u0440\u0435\u043a\u0432\u0430\u043b\u0456\u0444\u0456\u043a\u0430\u0446\u0456\u044f&#34;}, {&#34;value&#34;: 12, &#34;label&#34;: &#34;\u043f\u0440\u0435\u043a\u0432\u0430\u043b\u0456\u0444\u0456\u043a\u0430\u0446\u0456\u044f: \u043f\u0435\u0440\u0456\u043e\u0434 \u043e\u0441\u043a\u0430\u0440\u0436\u0435\u043d\u043d\u044f&#34;}]"
+                                              class="zk-search__filter" id="status" multi="true" placeholder="Статус"
+                                              search-placeholder="Введіть для пошуку"
+                                              tracking-data="{&#34;TRACK_CONFIRM&#34;: [&#34;search_public&#34;, &#34;status&#34;, &#34;gov_tenders&#34;]}"
+                                              values="[]"></dropdown>
+                                    <dropdown add-class="zk-drop-down_width_200" button="Підтвердити"
+                                              choices="[{&#34;value&#34;: &#34;95-98&#34;, &#34;label&#34;: &#34;\u0410\u0420 \u041a\u0440\u0438\u043c&#34;}, {&#34;value&#34;: &#34;21-24&#34;, &#34;label&#34;: &#34;\u0412\u0456\u043d\u043d\u0438\u0446\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;43-45&#34;, &#34;label&#34;: &#34;\u0412\u043e\u043b\u0438\u043d\u0441\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;49-53&#34;, &#34;label&#34;: &#34;\u0414\u043d\u0456\u043f\u0440\u043e\u043f\u0435\u0442\u0440\u043e\u0432\u0441\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;83-87&#34;, &#34;label&#34;: &#34;\u0414\u043e\u043d\u0435\u0446\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;10-13&#34;, &#34;label&#34;: &#34;\u0416\u0438\u0442\u043e\u043c\u0438\u0440\u0441\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;88-90&#34;, &#34;label&#34;: &#34;\u0417\u0430\u043a\u0430\u0440\u043f\u0430\u0442\u0441\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;69-72&#34;, &#34;label&#34;: &#34;\u0417\u0430\u043f\u043e\u0440\u0456\u0437\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;76-78&#34;, &#34;label&#34;: &#34;\u0406\u0432\u0430\u043d\u043e-\u0424\u0440\u0430\u043d\u043a\u0456\u0432\u0441\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;01-06&#34;, &#34;label&#34;: &#34;\u041a\u0438\u0457\u0432&#34;}, {&#34;value&#34;: &#34;07-09&#34;, &#34;label&#34;: &#34;\u041a\u0438\u0457\u0432\u0441\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;25-28&#34;, &#34;label&#34;: &#34;\u041a\u0456\u0440\u043e\u0432\u043e\u0433\u0440\u0430\u0434\u0441\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;91-94&#34;, &#34;label&#34;: &#34;\u041b\u0443\u0433\u0430\u043d\u0441\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;79-82&#34;, &#34;label&#34;: &#34;\u041b\u044c\u0432\u0456\u0432\u0441\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;54-57&#34;, &#34;label&#34;: &#34;\u041c\u0438\u043a\u043e\u043b\u0430\u0457\u0432\u0441\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;65-68&#34;, &#34;label&#34;: &#34;\u041e\u0434\u0435\u0441\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;36-39&#34;, &#34;label&#34;: &#34;\u041f\u043e\u043b\u0442\u0430\u0432\u0441\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;33-35&#34;, &#34;label&#34;: &#34;\u0420\u0456\u0432\u043d\u0435\u043d\u0441\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;99&#34;, &#34;label&#34;: &#34;\u0421\u0435\u0432\u0430\u0441\u0442\u043e\u043f\u043e\u043b\u044c&#34;}, {&#34;value&#34;: &#34;40-42&#34;, &#34;label&#34;: &#34;\u0421\u0443\u043c\u0441\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;46-48&#34;, &#34;label&#34;: &#34;\u0422\u0435\u0440\u043d\u043e\u043f\u0456\u043b\u044c\u0441\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;61-64&#34;, &#34;label&#34;: &#34;\u0425\u0430\u0440\u043a\u0456\u0432\u0441\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;73-75&#34;, &#34;label&#34;: &#34;\u0425\u0435\u0440\u0441\u043e\u043d\u0441\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;29-32&#34;, &#34;label&#34;: &#34;\u0425\u043c\u0435\u043b\u044c\u043d\u0438\u0446\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;18-20&#34;, &#34;label&#34;: &#34;\u0427\u0435\u0440\u043a\u0430\u0441\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;14-17&#34;, &#34;label&#34;: &#34;\u0427\u0435\u0440\u043d\u0456\u0433\u0456\u0432\u0441\u044c\u043a\u0430&#34;}, {&#34;value&#34;: &#34;58-60&#34;, &#34;label&#34;: &#34;\u0427\u0435\u0440\u043d\u0456\u0432\u0435\u0446\u044c\u043a\u0430&#34;}]"
+                                              class="zk-search__filter" id="location" multi="true" placeholder="Регіон"
+                                              search="True" search-placeholder="Назва регіону"
+                                              static-choices="[{&#34;value&#34;: &#34;use_delivery&#34;, &#34;label&#34;: &#34;\u041f\u043e\u043a\u0430\u0437\u0430\u0442\u0438 \u0437\u0430\u043a\u0443\u043f\u0456\u0432\u043b\u0456 \u0437 \u0434\u043e\u0441\u0442\u0430\u0432\u043a\u043e\u044e \u0432 \u043e\u0431\u0440\u0430\u043d\u0438\u0439 \u0440\u0435\u0433\u0456\u043e\u043d&#34;}]"
+                                              tracking-data="{&#34;TRACK_CONFIRM&#34;: [&#34;search_public&#34;, &#34;region&#34;, &#34;gov_tenders&#34;]}"
+                                              values="[]"></dropdown>
+                                    <cpv-tree cancel-text="Скасувати" class="zk-search__filter"
+                                              cpv-tree-url="https://zakupki-static.prom.st/json/dk021/uk/data.json?v=fe127ef6bf6b2bdcd78265b4fc844a6a"
+                                              id="cpv-tree" input-placeholder="Найти (наприклад: паливо, продукти)"
+                                              link-text="ДК 021:2015" modal-header-text="Класифікатор ДК 021:2015"
+                                              ok-text="Обрати" selected-cpv="[]"
+                                              tracking-data="{&#34;SELECT&#34;: [&#34;search_public&#34;, &#34;cpv&#34;, &#34;gov_tenders&#34;]}"></cpv-tree>
+                                    <dkpp-tree cancel-text="Скасувати" class="zk-search__filter" id="dkpp-tree"
+                                               input-placeholder="Найти (наприклад: паливо, продукти)" link-text="ДКПП"
+                                               modal-header-text="Класифікатор ДКПП" ok-text="Обрати" selected-dkpp="[]"
+                                               tracking-data="{&#34;SELECT&#34;: [&#34;search_public&#34;, &#34;dkpp&#34;, &#34;gov_tenders&#34;]}"
+                                               tree-url="https://zakupki-static.prom.st/json/dkpp/data.json?v=fe127ef6bf6b2bdcd78265b4fc844a6a"></dkpp-tree>
+                                    <pricerange amount-f="null" amount-t="null" button="Використати" class="zk-search__filter"
+                                                currency="грн" fplaceholder="від" id="pricerange"
+                                                placeholder="Очікувана вартість" tplaceholder="до"
+                                                tracking-data="{&#34;CONFIRM_PRICERANGE_FIELD&#34;: [&#34;search_public&#34;, &#34;expected_value&#34;, &#34;gov_tenders&#34;]}"></pricerange>
+                                    <merchant class="zk-search__filter" confirm-btn-text="Використати" style="display: none"
+                                              input-label="Компанія або код ЄДРПОУ" merchant-type="state_purchaser"
+                                              search-placeholder="Компанія або код ЄДРПОУ" selected-items="[]"
+                                              selected-label="Замовник" title="Замовник"
+                                              tracking-data="{&#34;CONFIRM&#34;: [&#34;search_public&#34;, &#34;purchaser&#34;, &#34;gov_tenders&#34;]}"
+                                              url="https://zakupki.prom.ua/merchants"></merchant>
+                                    <tender-date-ranges style="display: none;" auction-launch-text="Дата початку аукціону" class="zk-search__filter"
+                                                        confirm-btn-text="Обрати" created-text="Дата оголошення тендера"
+                                                        lang="uk" link-text="Дати" placeholder-from="з" placeholder-to="до"
+                                                        tendering-end-text="Завершення прийому пропозицій"
+                                                        tendering-start-text="Початок прийому пропозицій"
+                                                        tracking-data="{&#34;TRACK_SELECT&#34;: [&#34;search_public&#34;, &#34;date&#34;, &#34;gov_tenders&#34;]}"></tender-date-ranges>
+                                    <dropdown add-class="zk-drop-down_width_200" button="Підтвердити"
+                                              choices="[{&#34;value&#34;: 0, &#34;label&#34;: &#34;\u0414\u043e\u043f\u043e\u0440\u043e\u0433\u043e\u0432\u0430 \u0437\u0430\u043a\u0443\u043f\u0456\u0432\u043b\u044f&#34;}, {&#34;value&#34;: 1, &#34;label&#34;: &#34;\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0456 \u0442\u043e\u0440\u0433\u0438&#34;}, {&#34;value&#34;: 2, &#34;label&#34;: &#34;\u0412\u0456\u0434\u043a\u0440\u0438\u0442\u0456 \u0442\u043e\u0440\u0433\u0438 \u0437 \u043f\u0443\u0431\u043b\u0456\u043a\u0430\u0446\u0456\u0454\u044e \u0430\u043d\u0433\u043b\u0456\u0439\u0441\u044c\u043a\u043e\u044e \u043c\u043e\u0432\u043e\u044e&#34;}, {&#34;value&#34;: 7, &#34;label&#34;: &#34;\u041f\u0435\u0440\u0435\u0433\u043e\u0432\u043e\u0440\u043d\u0430 \u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440\u0430 \u0434\u043b\u044f \u043f\u043e\u0442\u0440\u0435\u0431 \u043e\u0431\u043e\u0440\u043e\u043d\u0438&#34;}, {&#34;value&#34;: 3, &#34;label&#34;: &#34;\u0417\u0432\u0456\u0442 \u043f\u0440\u043e \u0443\u043a\u043b\u0430\u0434\u0435\u043d\u0438\u0439 \u0434\u043e\u0433\u043e\u0432\u0456\u0440&#34;}, {&#34;value&#34;: 4, &#34;label&#34;: &#34;\u041f\u0435\u0440\u0435\u0433\u043e\u0432\u043e\u0440\u043d\u0430 \u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440\u0430&#34;}, {&#34;value&#34;: 5, &#34;label&#34;: &#34;\u041f\u0435\u0440\u0435\u0433\u043e\u0432\u043e\u0440\u043d\u0430 \u043f\u0440\u043e\u0446\u0435\u0434\u0443\u0440\u0430, \u0441\u043a\u043e\u0440\u043e\u0447\u0435\u043d\u0430&#34;}, {&#34;value&#34;: 8, &#34;label&#34;: &#34;\u041a\u043e\u043d\u043a\u0443\u0440\u0435\u043d\u0442\u043d\u0438\u0439 \u0434\u0456\u0430\u043b\u043e\u0433&#34;}, {&#34;value&#34;: 9, &#34;label&#34;: &#34;\u041a\u043e\u043d\u043a\u0443\u0440\u0435\u043d\u0442\u043d\u0438\u0439 \u0434\u0456\u0430\u043b\u043e\u0433 \u0437 \u043f\u0443\u0431\u043b\u0456\u043a\u0430\u0446\u0456\u0454\u044e \u0430\u043d\u0433\u043b\u0456\u0439\u0441\u044c\u043a\u043e\u044e \u043c\u043e\u0432\u043e\u044e&#34;}, {&#34;value&#34;: 17, &#34;label&#34;: &#34;\u041f\u0443\u0431\u043b\u0456\u0447\u043d\u0456 \u0437\u0430\u043a\u0443\u043f\u0456\u0432\u043b\u0456 \u0435\u043d\u0435\u0440\u0433\u043e\u0441\u0435\u0440\u0432\u0456\u0441\u0443&#34;}, {&#34;value&#34;: 24, &#34;label&#34;: &#34;\u0423\u043a\u043b\u0430\u0434\u0435\u043d\u043d\u044f \u0440\u0430\u043c\u043a\u043e\u0432\u043e\u0457 \u0443\u0433\u043e\u0434\u0438&#34;}]"
+                                              class="zk-search__filter" id="method_type" multi="true"
+                                              placeholder="Тип процедури" search="True" search-placeholder="Тип процедури"
+                                              tracking-data="{&#34;TRACK_CONFIRM&#34;: [&#34;search_public&#34;, &#34;type&#34;, &#34;gov_tenders&#34;]}"
+                                              values="[]"></dropdown>
+                                </div>
+                                <splabels class="h-block h-mt-10" clearlabel="Скинути фільтри" clearurl="/tenders"></splabels>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script th:src="@{/static/javascripts/commons.bundle.js}" type="text/javascript"></script>
+    <script th:src="@{/static/javascripts/state_purchases.bundle.js}" type="text/javascript"></script>
+</div>
+</html>

@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/csv?useUnicode=yes&characterEncoding=UTF-8&autoReconnect=true
+    username: postgres
+    password: postgres
+
+proxy:
+  need-proxy: false

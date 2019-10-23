@@ -1,0 +1,59 @@
+<html layout:decorator="layout" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
+
+    <div layout:fragment="content">
+        <h3>Список моих оповещений</h3>
+        <hr />
+
+        <!--<a class="pull-left btn btn-sm btn-primary" th:href="@{/filter/new}">-->
+            <!--<i class="glyphicon glyphicon-plus"></i> Add new filter tender-->
+        <!--</a>-->
+        <a class="pull-left btn btn-sm btn-primary" th:href="@{/filter/new_auction}">
+            <i class="glyphicon glyphicon-plus"></i>Добавить новое оповещение
+        </a>
+
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th width="30%">Название</th>
+                <!--<th width="50%">URL</th>-->
+                <th width="10%">Статус</th>
+                <th width="10%">Обновлено</th>
+                <th width="10%">Действия</th>
+            </tr>
+            </thead>
+            <tbody style="text-align: left;">
+            <tr th:each="filter : ${filters}">
+                <!--<td>-->
+                    <!--<a th:href="@{'/filter/{id}'(id=${filter.id})}" th:text="Details"></a>-->
+                <!--</td>-->
+                <td th:text="${filter.description}"></td>
+                <!--<td th:text="${filter.url}"></td>-->
+                <td>
+                    <div th:switch="${filter.status}">
+                        <p th:case="${T(com.prozoro.models.Filter).CREATED}">In queue</p>
+                        <p th:case="${T(com.prozoro.models.Filter).CREATED_PARSING_IN_QUEUE}">In queue</p>
+                        <p th:case="${T(com.prozoro.models.Filter).CREATED_PARSING_IN_PROGRESS}">In progress</p>
+                        <p th:case="${T(com.prozoro.models.Filter).IN_MONITORING}">In monitoring</p>
+                    </div>
+                </td>
+                <td >
+                    <span th:if="${filter.lastUpdate != null}" th:text="${#dates.formatISO(filter.lastUpdate)}"></span>
+                    <span th:if="${filter.lastUpdate = null}"> Not parsed yet</span>
+                </td>
+                <td>
+
+                    <a th:href="@{'/filter_item/{filterId}/'(filterId=${filter.id})}" class="btn" title="List of items">
+                        <p>Найденные лоты</p>
+                        <!--<i class="glyphicon glyphicon-th-list"></i>-->
+                    </a>
+
+                    <a th:href="@{'/filter/{id}/delete'(id=${filter.id})}" class="btn btn-xs btn-default" title="Delete">
+                        <i class="glyphicon glyphicon-trash"></i>
+                    </a>
+
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</html>

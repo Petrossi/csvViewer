@@ -1,0 +1,18 @@
+version: '2'
+
+services:
+    csv_postgres:
+        build:
+          context: docker/csv
+          dockerfile: Dockerfile
+        container_name: csv_postgres
+        hostname: csv_postgres
+        restart: always
+        volumes:
+            - ./docker/csv/data:/var/lib/postgresql/data
+        ports:
+            - "5433:5432"
+        networks:
+          - network_csv
+networks:
+  network_csv:

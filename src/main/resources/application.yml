@@ -1,0 +1,71 @@
+server:
+  port: 8090
+
+security:
+  basic:
+    enabled: false
+liquibase:
+  change-log: classpath:/changelog/db.changelog-master.xml
+spring:
+  session:
+    store-type: jdbc
+    jdbc:
+      initialize-schema: embedded
+      schema: classpath:org/springframework/session/jdbc/schema-@@platform@@.sql
+      table-name: SPRING_SESSION
+#        initialize-schema: always
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    test-on-borrow: false
+    platform: postgres
+    testWhileIdle: false
+    max-active: 2000
+    max-idle: 4000
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming-strategy: org.hibernate.cfg.ImprovedNamingStrategy
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL9Dialect
+        temp:
+          use_jdbc_metadata_defaults: false
+    show-sql: false
+  spring:
+    mail:
+      host: smtp.yandex.ru
+      port: 587
+      username: support@lotscanner.com
+      password: "JuQwWA937432"
+  thymeleaf:
+    prefix: classpath:/templates/
+    cache: false
+  resources:
+    static-locations: classpath:/static/
+    cache-period: 0
+
+logging:
+#  file: crawler.log
+  level:
+    org:
+      springframework:
+        web: ERROR
+#        web: DEBUG
+
+        socket:
+          config:
+            WebSocketMessageBrokerStats: DEBUG
+      hibernate: ERROR
+#      hibernate: DEBUG
+#        web: DEBUG
+
+    com:
+      crawler: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+proxy:
+  url: https://blazingseollc.com/proxy/dashboard/api/export/4/all/lych.yanina@gmail.com/HByzN27O/list.csv
+  need-proxy: true
+  updateDelay: 600000

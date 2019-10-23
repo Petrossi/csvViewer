@@ -1,0 +1,50 @@
+<html layout:decorator="layout" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:layout="http://www.w3.org/1999/xhtml">
+<div layout:fragment="content">
+
+    <h3>Found items</h3>
+    <hr />
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th width="40%">Url</th>
+            <th width="10%">Created</th>
+        </tr>
+        </thead>
+        <tbody style="text-align: left;">
+        <tr th:each="filterItem : ${filterItems}">
+            <td><a th:href="${filterItem.url}" th:text="${filterItem.url}" target="_blank"></a>
+            </td>
+            <td th:text="${#dates.format(filterItem.dateCreate, 'yyyy-MM-dd')}"></td>
+        </tr>
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="form-group col-md-1">
+            <select class="form-control pagination" id="pageSizeSelect">
+                <option th:each="pageSize : ${pageSizes}" th:text="${pageSize}" th:value="${pageSize}" th:selected="${pageSize} == ${selectedPageSize}"></option>
+            </select>
+        </div>
+        <div th:if="${filterItems.getTotalPages() != 1}" class="form-group col-md-11 pagination-centered">
+            <ul class="pagination">
+                <li th:class="${filterItems.getNumber() == 0} ? disabled">
+                    <a class="pageLink" th:href="@{${route}(pageSize=${selectedPageSize}, page=1, filterId=${filter.id})}">&laquo;</a>
+                </li>
+                <li th:class="${filterItems.getNumber() == 0} ? disabled">
+                    <a class="pageLink" th:href="@{${route}(pageSize=${selectedPageSize}, page=${filterItems.getNumber()}, filterId=${filter.id})}">&larr;</a>
+                </li>
+                <li th:class="${filterItems.getNumber() == (page - 1)} ? 'active pointer-disabled'"
+                    th:each="page : ${#numbers.sequence(pagination.getFirstPage(), pagination.getLastPage())}">
+                    <a class="pageLink" th:href="@{${route}(pageSize=${selectedPageSize}, page=${page}, filterId=${filter.id})}" th:text="${page}"></a>
+                </li>
+                <li th:class="${filterItems.getNumber() + 1 == filterItems.getTotalPages()} ? disabled">
+                    <a class="pageLink" th:href="@{${route}(pageSize=${selectedPageSize}, page=${filterItems.getNumber() + 2}, filterId=${filter.id})}">&rarr;</a>
+                </li>
+                <li th:class="${filterItems.getNumber() + 1 == filterItems.getTotalPages()} ? disabled">
+                    <a class="pageLink" th:href="@{${route}(pageSize=${selectedPageSize}, page=${filterItems.getTotalPages()}, filterId=${filter.id})}">&raquo;</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+</html>

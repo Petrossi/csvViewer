@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"></meta>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"></meta>
+    <meta name="description" content=""></meta>
+    <meta name="keywords" content=""></meta>
+    <title>index</title>
+    <link th:href="@{/static/stylesheets/landing/bootstrap.css}" rel="stylesheet"></link>
+    <link th:href="@{/static/stylesheets/landing/style.css}" rel="stylesheet"></link>
+    <link th:href="@{/static/stylesheets/landing/magnific-popup.css}" rel="stylesheet"></link>
+    <link th:href="@{/static/stylesheets/landing/iconfont-style.css}" rel="stylesheet"></link>
+    <!--<link th:href="@{/scripts/animations/animate.css}" rel="stylesheet"></link>-->
+    <link th:href="@{/static/stylesheets/landing/bootstrap-datepicker3.min.css}" rel="stylesheet"></link>
+    <link rel="icon" th:href="@{/static/images/landing/favicons/favicon.png}"></link>
+    <link rel="apple-touch-icon" th:href="@{/static/images/landing/favicons/apple-touch-icon.png}"></link>
+    <link rel="apple-touch-icon" sizes="72x72" th:href="@{/static/images/landing/favicons/apple-touch-icon-72x72.png}"></link>
+    <link rel="apple-touch-icon" sizes="114x114" th:href="@{/static/images/landing/favicons/apple-touch-icon-114x114.png}"></link>
+    <script th:src="@{/static/javascripts/landing/html5shiv.js}"></script>
+    <script th:src="@{/static/javascripts/landing/respond.min.js}"></script>
+</head>
+<body data-spy="scroll" data-target=".navMenuCollapse">
+    <div id="preloader">
+        <div class="loading-data"></div>
+    </div>
+    <div id="wrap">
+        <header id="intro-center-form" class="intro-block cover-bg text-center"
+                style="background-image: url(&quot;static/images/landing/bg10.jpg&quot;);">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-12 dark-bg">
+                        <div class="slogan" style=""><h1>Новые объекты аукционов <strong>ProZorro.Продажі</strong> на вашей
+                            почте</h1>
+                            <p>
+                                <b>Узнайте первыми о лотах малой приватизации, аренды или госзакупок</b>
+                            </p></div>
+                    </div>
+                    <div class="col-md-6 col-md-offset-3">
+                        <div class="form-container">
+                            <h3 class="title">Создать бесплатный аккаунт</h3>
+                            <form action="/landing_form" role="form" id="contact_form" novalidate="novalidate">
+                                <div class="form-group">
+                                    <input type="text" class="form-control" id="contact_name" placeholder="Ваше имя" name="name"></input>
+                                </div>
+                                <div class="form-group">
+                                    <input type="email" class="form-control" id="contact_email" placeholder="Почта" name="email"></input>
+                                </div>
+                                <!--<div class="form-group">-->
+                                <!--<textarea class="form-control" rows="4" placeholder="Название оповещения, например Офисы Львов Аренда" id="contact_message" name="message"></textarea>-->
+                                <!--</div>-->
+                                <button type="submit" id="contact_submit" data-loading-text="•••" class="btn btn-lg btn-block btn-primary">
+                                    Продолжить
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <div class="modal fade" id="modalContactSuccess" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">
+                        ×
+                    </button>
+                    <h3 class="modal-title">
+                        <i class="icon icon-envelope-open"></i>
+                        Well done!<br></br>Your message has been successfully sent!
+                    </h3>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="modalContactError" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h3 class="modal-title">
+                        <i class="icon icon-ban"></i>
+                        Oops!<br></br>Something went wrong!
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <nav class="navbar bg-color3">
+            <div class="container">
+                <a class="navbar-brand goto" href="#"></a>
+                <button class="round-toggle navbar-toggle menu-collapse-btn collapsed" data-toggle="collapse" data-target=".navMenuCollapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <div class="collapse navbar-collapse navMenuCollapse">
+                    <ul class="nav">
+                        <li>
+                            <a href="/rules">Правила<br></br></a>
+                        </li>
+                        <li>
+                            <a href="#">О проекте<br></br></a>
+                        </li>
+                        <li>
+                            <a href="#">FAQ</a>
+                        </li>
+                        <li>
+                            <a href="#">Написать разработчикам</a>
+                        </li>
+                        <li>
+                            <a href="/login">Войти в аккаунт</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </div>
+
+    <script th:src="@{/static/javascripts/landing/jquery-1.11.2.min.js}"></script>
+    <script th:src="@{/static/javascripts/landing/bootstrap.min.js}"></script>
+    <script th:src="@{/static/javascripts/landing/jquery.validate.min.js}"></script>
+    <script th:src="@{/static/javascripts/landing/placeholders.jquery.min.js}"></script>
+    <script th:src="@{/static/javascripts/landing/waypoints.min.js}"></script>
+    <script th:src="@{/static/javascripts/landing/custom.js}"></script>
+</body>
+</html>

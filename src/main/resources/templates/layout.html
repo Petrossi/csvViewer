@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <title>LotScanner</title>
+
+    <link rel="stylesheet" th:href="@{/static/stylesheets/purchases.css}"></link>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css"></link>
+
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}" rel="stylesheet"/>
+    <!--<link th:href="@{/webjars/bootstrap/3.3.7-1/landing/sticky-footer-navbar.landing}" rel="stylesheet"/>-->
+    <link th:href="@{/static/stylesheets/application.css}" rel="stylesheet"/>
+    <script type="text/javascript" th:src="@{/webjars/jquery/3.1.1-1/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
+</head>
+
+<body>
+    <header>
+        <!-- Fixed navbar -->
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">LotScanner</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li th:classappend="${controllerName == 'Home'}? 'active'" sec:authorize="!isAuthenticated()"><a th:href="@{/}">Home</a></li>
+                        <li th:classappend="${controllerName == 'Help'}" sec:authorize="!isAuthenticated()"><a th:href="@{/contact}">Help</a></li>
+                        <li th:classappend="${controllerName == 'Login'}? 'active'" sec:authorize="!isAuthenticated()"><a th:href="@{/login}">Login</a></li>
+                        <!--<li th:classappend="${controllerName == 'Dash'}? 'active'" sec:authorize="isAuthenticated()"><a th:href="@{/dash}">Dash</a></li>-->
+                        <!--<li th:classappend="${controllerName == 'Projects'}? 'active'" sec:authorize="isAuthenticated()"><a th:href="@{/projects}">Projects</a></li>-->
+                        <!--<li th:classappend="${controllerName == 'Tasks'}? 'active'" sec:authorize="isAuthenticated()"><a th:href="@{/tasks}">Tasks</a></li>-->
+                        <li th:classappend="${controllerName == 'Users'}? 'active'" sec:authorize="hasRole('ADMIN')"><a th:href="@{/users}">Users</a></li>
+                        <li th:classappend="${controllerName == 'Filter'}? 'active'" sec:authorize="isAuthenticated()"><a th:href="@{/filter}">Оповещения</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right" >
+                        <li>
+                            <a href="#" class="dropdown-toggle" role="button">Добро пожаловать, <span sec:authentication="name">Guest</span></a>
+                        </li>
+                        <li sec:authorize="isAuthenticated()">
+                            <form th:action="@{/logout}" method="post" style="margin: 8px 0px;">
+                                <button class="btn btn-danger" type="submit">Выйти</button>
+                            </form>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container top-margin" layout:fragment="content">
+        <div class="page-header">
+            <h1>Sticky footer with fixed navbar</h1>
+        </div>
+        <p class="lead">Pin a fixed-height footer to the bottom of the viewport in desktop browsers with this custom HTML and CSS. A fixed navbar has been added with <code>padding-top: 60px;</code> on the <code>body &gt; .container</code>.</p>
+        <p>Back to <a href="../sticky-footer">the default sticky footer</a> minus the navbar.</p>
+
+    </div>
+
+    <!--<footer class="footer">-->
+        <!--<div class="container">-->
+            <!--<p class="text-muted text-center">&copy; Filter parser, 2017</p>-->
+        <!--</div>-->
+    <!--</footer>-->
+</body>
+</html>
