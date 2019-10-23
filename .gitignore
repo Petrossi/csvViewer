@@ -27,7 +27,7 @@ target/classes/com/crawler/rabbit/service/DBImporterService.class
 .idea/dataSources.ids
 .idea/kotlinc.xml
 .idea/libraries/Maven__xml_apis_xml_apis_1_0_b2.xml
-target/classes/
+target/
 *.class
 target/classes/application.properties
 target/classes/com/crawler/rabbit/service/crawler/UrlWorkerManagerService.class
