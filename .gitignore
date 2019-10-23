@@ -3,6 +3,7 @@
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
 
+csvParser.iml
 # Package Files #
 *.jar
 *.war
@@ -60,6 +61,4 @@ target/classes/com/crawler/rabbit/service/crawler/UrlWorkerManagerService.class
 .target
 b96ea8f2-f83b-4bec-ad2c-29d9a63fd6fb.uml
 docker/postgres/
-
-/docker/crawler_postgres/data/
-/docker/crawler_postgres/data_free/
+docker/csv/data
