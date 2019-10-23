@@ -10,10 +10,10 @@ spring:
   session:
     store-type: jdbc
     jdbc:
-      initialize-schema: embedded
+#      initialize-schema: embedded
       schema: classpath:org/springframework/session/jdbc/schema-@@platform@@.sql
       table-name: SPRING_SESSION
-#        initialize-schema: always
+      initialize-schema: always
   datasource:
     driver-class-name: org.postgresql.Driver
     test-on-borrow: false
@@ -38,6 +38,7 @@ spring:
       username: support@lotscanner.com
       password: "JuQwWA937432"
   thymeleaf:
+    enabled: false
     prefix: classpath:/templates/
     cache: false
   resources:
