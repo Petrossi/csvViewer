@@ -1,23 +1,11 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <!-- jQuery
-    ====================================================================== -->
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
-
-    <!-- Fine Uploader New/Modern CSS file
-    ====================================================================== -->
-    <link href="client/fine-uploader-new.css" rel="stylesheet">
-
-    <!-- Fine Uploader jQuery JS file
-    ====================================================================== -->
-    <script src="client/jquery.fine-uploader.js"></script>
-
-    <!-- Fine Uploader Thumbnails template w/ customization
-    ====================================================================== -->
+    <link href="https://fineuploader.com/source/fine-uploader-new.css" rel="stylesheet">
+    <script src="https://fineuploader.com/source/all.fine-uploader.min.js"></script>
     <script type="text/template" id="qq-template-manual-trigger">
         <div class="qq-uploader-selector qq-uploader" qq-drop-area-text="Drop files here">
             <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
@@ -111,26 +99,7 @@
 ====================================================================== -->
 <div id="fine-uploader-manual-trigger"></div>
 
-<!-- Your code to create an instance of Fine Uploader and bind to the DOM/template
-====================================================================== -->
-<script>
-    $('#fine-uploader-manual-trigger').fineUploader({
-        template: 'qq-template-manual-trigger',
-        request: {
-            endpoint: '/server/uploads'
-        },
-        thumbnails: {
-            placeholders: {
-                waitingPath: '/source/placeholders/waiting-generic.png',
-                notAvailablePath: '/source/placeholders/not_available-generic.png'
-            }
-        },
-        autoUpload: false
-    });
+<script th:src="@{/static/javascripts/fineUploader.js}"></script>
 
-    $('#trigger-upload').click(function() {
-        $('#fine-uploader-manual-trigger').fineUploader('uploadStoredFiles');
-    });
-</script>
 </body>
 </html>

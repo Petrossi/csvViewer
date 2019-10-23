@@ -38,20 +38,21 @@ spring:
       username: support@lotscanner.com
       password: "JuQwWA937432"
   thymeleaf:
-#    enabled: false
     prefix: classpath:/templates/
     cache: false
+    mode: LEGACYHTML5
   resources:
     static-locations: classpath:/static/
-    cache-period: 0
+    cache-period: 1
   http:
     multipart:
-      enabled: false
-
+      maxFileSize: 200MB
+      maxRequestSize: 200MB
+      enabled: true
   servlet:
     multipart:
-      max-file-size: 20000KB
-      max-request-size: 20000KB
+      maxFileSize: 200MB
+      maxRequestSize: 200MB
 logging:
 #  file: crawler.log
   level:
@@ -77,3 +78,6 @@ proxy:
   url: https://blazingseollc.com/proxy/dashboard/api/export/4/all/lych.yanina@gmail.com/HByzN27O/list.csv
   need-proxy: true
   updateDelay: 600000
+
+fineuploader:
+  base-dir: ./uploads

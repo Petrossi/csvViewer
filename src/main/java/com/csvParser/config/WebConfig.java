@@ -2,7 +2,7 @@ package com.csvParser.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.http.CacheControl;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -12,13 +12,20 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/webjars/**").addResourceLocations("classpath:/META-INF/resources/webjars/");
-        registry.addResourceHandler("/static/**").addResourceLocations("classpath:/static/");
-    }
-
-    @Override
-    public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new BaseInterceptor());
+        registry
+            .addResourceHandler("/webjars/**")
+            .addResourceLocations("classpath:/META-INF/resources/webjars/").
+//            setCachePeriod(1).
+            setCacheControl(CacheControl.noCache()).
+            resourceChain(false)
+        ;
+        registry.
+            addResourceHandler("/static/**").
+            addResourceLocations("classpath:/static/").
+//            setCachePeriod(1).
+            setCacheControl(CacheControl.noCache()).
+            resourceChain(false)
+        ;
     }
 
     @Override

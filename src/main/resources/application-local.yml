@@ -6,3 +6,4 @@ spring:
 
 proxy:
   need-proxy: false
+
