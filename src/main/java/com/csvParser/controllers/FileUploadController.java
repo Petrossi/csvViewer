@@ -26,13 +26,11 @@ public class FileUploadController {
         try {
             boolean isMultipart = ServletFileUpload.isMultipartContent(request);
             if (!isMultipart) {
-                return new Response<String>(false, "Not a multipart request.", "");
+                return new Response<>(false, "Not a multipart request.", "");
             }
 
-            // Create a new file upload handler
             ServletFileUpload upload = new ServletFileUpload();
 
-            // Parse the request
             FileItemIterator iter = upload.getItemIterator(request);
             while (iter.hasNext()) {
                 FileItemStream item = iter.next();
@@ -40,7 +38,6 @@ public class FileUploadController {
                 InputStream stream = item.openStream();
                 if (!item.isFormField()) {
                     String filename = item.getName();
-                    // Process the input stream
                     OutputStream out = new FileOutputStream(filename);
                     IOUtils.copy(stream, out);
                     stream.close();

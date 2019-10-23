@@ -43,7 +43,14 @@ spring:
   resources:
     static-locations: classpath:/static/
     cache-period: 0
+  http:
+    multipart:
+      enabled: false
 
+  servlet:
+    multipart:
+      max-file-size: 20000KB
+      max-request-size: 20000KB
 logging:
 #  file: crawler.log
   level:

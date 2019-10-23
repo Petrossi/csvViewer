@@ -19,7 +19,5 @@ public class BaseInterceptor extends HandlerInterceptorAdapter {
             actionName = handlerMethod.getMethod().getName();
         }
 
-        modelAndView.addObject("controllerName", controllerName );
-        modelAndView.addObject("actionName", actionName );
     }
 }
