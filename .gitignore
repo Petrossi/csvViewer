@@ -41,4 +41,6 @@ b96ea8f2-f83b-4bec-ad2c-29d9a63fd6fb.uml
 docker/postgres/
 docker/csv/data
 uploads/
+finalDir/
 /uploads
+/finalDir

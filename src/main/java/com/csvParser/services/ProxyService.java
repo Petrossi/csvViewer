@@ -39,8 +39,6 @@ public class ProxyService extends LoggableService {
     public void initProxiesFromBlazingseollc() {
         try{
             if(!needProxy){
-                error("Poxy false");
-
                 return;
             }
 

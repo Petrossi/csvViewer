@@ -1,7 +1,9 @@
 package com.csvParser.controllers;
 
+import com.csvParser.models.Task;
 import com.csvParser.models.fineuploader.UploadRequest;
 import com.csvParser.models.fineuploader.UploadResponse;
+import com.csvParser.services.abstraction.TaskService;
 import com.csvParser.services.fineuploader.StorageException;
 import com.csvParser.services.fineuploader.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,9 +18,12 @@ public class FineUploaderController {
     @Autowired
     private StorageService storageService;
 
+    @Autowired
+    private TaskService taskService;
+
     @CrossOrigin
     @PostMapping("/uploads")
-    public ResponseEntity<UploadResponse> upload(
+    public ResponseEntity<?> upload(
             @RequestParam("qqfile") MultipartFile file,
             @RequestParam("qquuid") String uuid,
             @RequestParam("qqfilename") String fileName,
@@ -33,6 +38,11 @@ public class FineUploaderController {
         request.setTotalParts(totalParts);
 
         storageService.save(request);
+        if(totalParts == -1){
+            Task task = taskService.create(uuid, fileName);
+
+            return ResponseEntity.ok().body(task);
+        }
 
         return ResponseEntity.ok().body(new UploadResponse(true));
     }
@@ -53,13 +63,15 @@ public class FineUploaderController {
 
     @CrossOrigin
     @PostMapping("/chunksdone")
-    public ResponseEntity<Void> chunksDone(
+    public ResponseEntity<Task> chunksDone(
             @RequestParam("qquuid") String uuid,
             @RequestParam("qqfilename") String fileName,
             @RequestParam(value = "qqtotalparts") int totalParts){
 
         storageService.mergeChunks(uuid, fileName, totalParts);
 
-        return ResponseEntity.noContent().build();
+        Task task = taskService.create(uuid, fileName);
+
+        return ResponseEntity.ok().body(task);
     }
 }

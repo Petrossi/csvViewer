@@ -21,14 +21,14 @@ const manualUploader = new qq.FineUploader({
     },
     callbacks: {
         onComplete: function(id, name, responseJSON, ) {
-
+            // window.location = "/task/" + responseJSON.token
         }
     },
     validation: {
         itemLimit: 1,
     },
     autoUpload: false,
-    debug: true
+    // debug: true
 });
 
 qq(document.getElementById("trigger-upload")).attach("click", function() {

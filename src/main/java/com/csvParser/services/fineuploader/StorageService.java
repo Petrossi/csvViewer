@@ -2,6 +2,7 @@ package com.csvParser.services.fineuploader;
 
 import com.csvParser.models.fineuploader.UploadRequest;
 import com.csvParser.services.abstraction.LoggableService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.FileSystemUtils;
 
@@ -17,7 +18,19 @@ import java.nio.file.Paths;
 @Service
 public class StorageService extends LoggableService {
 
-    private Path basePath = Paths.get("./uploads");
+    @Value("${fineUploader.downloadDir}")
+    private String downloadDir;
+
+    @Value("${fineUploader.finalDir}")
+    private String finalDir;
+
+    private Path getDownloadPath(){
+        return Paths.get(downloadDir);
+    }
+
+    private Path getFinalPath(){
+        return Paths.get(finalDir);
+    }
 
     public void save(UploadRequest ur) {
         if (ur.getFile().isEmpty()) {
@@ -25,9 +38,9 @@ public class StorageService extends LoggableService {
         }
         Path targetFile;
         if (ur.getPartIndex() > -1) {
-            targetFile = basePath.resolve(ur.getUuid()).resolve(String.format("%s_%05d", ur.getUuid(), ur.getPartIndex()));
+            targetFile = getDownloadPath().resolve(ur.getUuid()).resolve(String.format("%s_%05d", ur.getUuid(), ur.getPartIndex()));
         } else {
-            targetFile = basePath.resolve(ur.getUuid()).resolve(ur.getFileName());
+            targetFile = getDownloadPath().resolve(ur.getUuid()).resolve(ur.getFileName());
         }
         try {
             Files.createDirectories(targetFile.getParent());
@@ -40,15 +53,15 @@ public class StorageService extends LoggableService {
     }
 
     public void delete(String uuid) {
-        File targetDir = basePath.resolve(uuid).toFile();
+        File targetDir = getDownloadPath().resolve(uuid).toFile();
         FileSystemUtils.deleteRecursively(targetDir);
     }
 
     public void mergeChunks(String uuid, String fileName, int totalParts) {
-        File targetFile = basePath.resolve(uuid).resolve(fileName).toFile();
+        File targetFile = getDownloadPath().resolve(uuid).resolve(fileName).toFile();
         try (FileChannel dest = new FileOutputStream(targetFile, true).getChannel()) {
             for (int i = 0; i < totalParts; i++) {
-                File sourceFile = basePath.resolve(uuid).resolve(String.format("%s_%05d", uuid, i)).toFile();
+                File sourceFile = getDownloadPath().resolve(uuid).resolve(String.format("%s_%05d", uuid, i)).toFile();
                 try (FileChannel src = new FileInputStream(sourceFile).getChannel()) {
                     dest.position(dest.size());
                     src.transferTo(0, src.size(), dest);
@@ -59,6 +72,21 @@ public class StorageService extends LoggableService {
             String errorMsg = String.format("Error occurred when merging chunks for uuid = [%s]", uuid);
             logger.error(errorMsg, e);
             throw new StorageException(errorMsg, e);
+        }
+    }
+
+    public void moveToFinalDir(String uuid, String fileName){
+        try {
+            Path currentFilePath = getDownloadPath().resolve(uuid).resolve(fileName);
+            if(currentFilePath.toFile().exists()){
+                Path finalFilePath = getFinalPath().resolve(fileName);
+
+                Files.createDirectories(finalFilePath.getParent());
+
+                Files.move(currentFilePath, finalFilePath);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
