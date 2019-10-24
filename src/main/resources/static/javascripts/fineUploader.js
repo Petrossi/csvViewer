@@ -1,8 +1,7 @@
-var manualUploader = new qq.FineUploader({
+const manualUploader = new qq.FineUploader({
     element: document.getElementById('fine-uploader-manual-trigger'),
     template: 'qq-template-manual-trigger',
     request: {
-        // endpoint: 'http://localhost:9090/uploads'
         endpoint: '/uploads'
     },
     thumbnails: {
@@ -10,6 +9,23 @@ var manualUploader = new qq.FineUploader({
             waitingPath: 'https://fineuploader.com/source/placeholders/waiting-generic.png',
             notAvailablePath: 'https://fineuploader.com/source/placeholders/not_available-generic.png'
         }
+    },
+    chunking: {
+        enabled: true,
+        concurrent: {
+            enabled: true
+        },
+        success: {
+            endpoint: '/chunksdone'
+        }
+    },
+    callbacks: {
+        onComplete: function(id, name, responseJSON, ) {
+
+        }
+    },
+    validation: {
+        itemLimit: 1,
     },
     autoUpload: false,
     debug: true

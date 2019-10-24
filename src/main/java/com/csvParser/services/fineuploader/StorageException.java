@@ -1,8 +1,5 @@
-package com.csvParser.fineuploader.io;
+package com.csvParser.services.fineuploader;
 
-/**
- * Created by ovaldez on 11/13/16.
- */
 public class StorageException extends RuntimeException {
 
     public StorageException(String message) {
@@ -12,5 +9,4 @@ public class StorageException extends RuntimeException {
     public StorageException(String message, Throwable cause) {
         super(message, cause);
     }
-
 }

@@ -1,9 +1,9 @@
 package com.csvParser.controllers;
 
-import com.csvParser.fineuploader.io.StorageException;
-import com.csvParser.fineuploader.io.StorageService;
-import com.csvParser.fineuploader.model.UploadRequest;
-import com.csvParser.fineuploader.model.UploadResponse;
+import com.csvParser.models.fineuploader.UploadRequest;
+import com.csvParser.models.fineuploader.UploadResponse;
+import com.csvParser.services.fineuploader.StorageException;
+import com.csvParser.services.fineuploader.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,12 +13,8 @@ import org.springframework.web.multipart.MultipartFile;
 @RestController
 public class FineUploaderController {
 
-    private final StorageService storageService;
-
     @Autowired
-    public FineUploaderController(StorageService storageService) {
-        this.storageService = storageService;
-    }
+    private StorageService storageService;
 
     @CrossOrigin
     @PostMapping("/uploads")
@@ -51,6 +47,7 @@ public class FineUploaderController {
     @DeleteMapping("/uploads/{uuid}")
     public ResponseEntity<Void> delete(@PathVariable("uuid") String uuid) {
         storageService.delete(uuid);
+
         return ResponseEntity.ok().build();
     }
 
@@ -59,10 +56,9 @@ public class FineUploaderController {
     public ResponseEntity<Void> chunksDone(
             @RequestParam("qquuid") String uuid,
             @RequestParam("qqfilename") String fileName,
-            @RequestParam(value = "qqtotalparts") int totalParts,
-            @RequestParam(value = "qqtotalfilesize") long totalFileSize) {
+            @RequestParam(value = "qqtotalparts") int totalParts){
 
-        storageService.mergeChunks(uuid, fileName, totalParts, totalFileSize);
+        storageService.mergeChunks(uuid, fileName, totalParts);
 
         return ResponseEntity.noContent().build();
     }

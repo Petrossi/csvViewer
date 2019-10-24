@@ -1,4 +1,4 @@
-package com.csvParser.fineuploader.model;
+package com.csvParser.models.fineuploader;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;

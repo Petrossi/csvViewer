@@ -1,4 +1,4 @@
-package com.csvParser.fineuploader.model;
+package com.csvParser.models.fineuploader;
 
 import org.springframework.web.multipart.MultipartFile;
 
