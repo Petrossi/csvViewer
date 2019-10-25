@@ -31,6 +31,18 @@ public class TaskController {
 
     @GetMapping(value="/task/data/pagination/", produces = { MediaType.APPLICATION_JSON_VALUE })
     @ResponseBody
+    public ResponseEntity<String> getPaginationData(
+        @RequestParam(value = "sortBy", defaultValue = "asc") String sortBy,
+        @RequestParam(value = "sortParam", defaultValue = "") String sortParam,
+        @RequestParam(value = "page", defaultValue = "1") int page,
+        @RequestParam(value = "pageSize", defaultValue = "10") int pageSize,
+        @RequestParam(value = "token") String token
+    ) {
+        return ResponseEntity.ok().body(taskService.getData(new TaskDataPaginationConfig(sortBy, sortParam, page, pageSize, token)));
+    }
+
+    @PostMapping(value="/task/data/pagination/", produces = { MediaType.APPLICATION_JSON_VALUE })
+    @ResponseBody
     public ResponseEntity<String> getPaginationData(@RequestBody TaskDataPaginationConfig config) {
         return ResponseEntity.ok().body(taskService.getData(config));
     }

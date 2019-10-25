@@ -1,7 +1,5 @@
 package com.csvParser.common.pagination;
 
-import java.util.Map;
-
 public abstract class PaginationConfig {
 
     protected String sortBy = "asc";
@@ -12,11 +10,11 @@ public abstract class PaginationConfig {
     public PaginationConfig() {
     }
 
-    public PaginationConfig(Map<String, String> data) {
-        this.sortBy = data.containsKey("sortBy") && data.get("sortBy").equals("asc") ? "asc": data.get("sortBy");
-        this.sortParam = data.getOrDefault("sortParam", "");
-        this.page = data.containsKey("page") ? Integer.parseInt(data.get("page")) : 1;
-        setPageSize(data.containsKey("pageSize") ? Integer.parseInt(data.get("pageSize")) : -1);
+    public PaginationConfig(String sortBy, String sortParam, int page, int pageSize) {
+        this.sortBy = sortBy;
+        this.sortParam = sortParam;
+        this.page = page;
+        this.pageSize = pageSize;
     }
 
     public String getSortBy() {

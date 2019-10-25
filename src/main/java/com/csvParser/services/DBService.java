@@ -4,6 +4,7 @@ import com.csvParser.common.pagination.task.TaskDataPaginationConfig;
 import com.csvParser.models.Task;
 import com.csvParser.services.abstraction.AbstractService;
 import com.csvParser.services.fineuploader.StorageService;
+import com.csvParser.utils.JsonConverter;
 import liquibase.util.csv.CSVReader;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,11 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
+
+import static com.csvParser.services.TableService.TASK_STORE_SCHEMA_NAME;
 
 @Service
 public class DBService extends AbstractService {
@@ -59,18 +64,18 @@ public class DBService extends AbstractService {
     public String parseData(TaskDataPaginationConfig config) {
         Task task = taskService.findByToken(config.getToken());
 
-//        String sql = new SQLBuilder()
-//                .setSelect("(CASE WHEN COUNT(*) > 0 THEN '+' ELSE '-' END)")
-//                .setFromTable(task.getToken())
-//                .setFromSchema(TASK_STORE_SCHEMA_NAME)
-//                .setFromTableAlias("fps")
-//                .setJoins("INNER JOIN " + finalPageService.getTableNameWithSchema(domain, TABLE_PREFIX) + " rfp on fp.id = rfp.id")
-//                .setWhere(newFilterWhere.replace("fp.", "fps."))
-//                .andWhere("fp.id = fps.id")
-//                .buildSql();
+        String sql = new SQLBuilder()
+                .setSelect(Arrays.stream(task.getHeaders()).collect(Collectors.joining(",")))
+                .setFromTable(task.getToken())
+                .setFromSchema(TASK_STORE_SCHEMA_NAME)
+                .setFromTableAlias("t")
+                .buildSql();
 
-        return "";
+        List result = getColumnsList(sql, Arrays.asList(task.getHeaders()));
+
+        return JsonConverter.convertToJson(result);
     }
+
     private CSVReader getReader(String fileName) throws FileNotFoundException {
         return new CSVReader(new FileReader(storageService.getFinalPath().resolve(fileName).toFile()));
     }

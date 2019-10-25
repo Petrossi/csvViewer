@@ -1,16 +1,15 @@
 package com.csvParser.common.pagination;
 
-import java.util.Map;
-
 public class TokenPaginationConfig extends PaginationConfig {
 
     protected String token;
 
-    public TokenPaginationConfig() { }
+    public TokenPaginationConfig() {
+    }
 
-    public TokenPaginationConfig(Map<String, String> data){
-        super(data);
-        this.token = data.get("token") != null ? data.get("token") : "";
+    public TokenPaginationConfig(String sortBy, String sortParam, int page, int pageSize, String token) {
+        super(sortBy, sortParam, page, pageSize);
+        this.token = token;
     }
 
     public String getToken() {
