@@ -3,7 +3,7 @@ package com.csvParser.controllers;
 import com.csvParser.models.Task;
 import com.csvParser.models.fineuploader.UploadRequest;
 import com.csvParser.models.fineuploader.UploadResponse;
-import com.csvParser.services.abstraction.TaskService;
+import com.csvParser.services.TaskService;
 import com.csvParser.services.fineuploader.StorageException;
 import com.csvParser.services.fineuploader.StorageService;
 import org.springframework.beans.factory.annotation.Autowired;

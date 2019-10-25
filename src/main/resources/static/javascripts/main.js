@@ -1,70 +1,4 @@
-$( document ).ready(function () {
-    initTest();
-    // clearAll();
-})
 
-function clearAll() {
-    assignText("");
-}
-
-function initTest() {
-    const testCSV = "39,2092,2,4,2019-10-21 16:19:32,\n" +
-        "40,2093,2,4,2019-10-21 16:19:44,\n" +
-        "41,2094,0,4,2019-10-21 16:24:53,\n" +
-        "42,2100,10138923,4,2019-10-21 16:34:07,\n" +
-        "43,2101,10138923,4,2019-10-21 16:40:49,\n" +
-        "44,2104,10138923,4,2019-10-21 17:22:54,\n" +
-        "45,2105,10138923,4,2019-10-21 17:28:26,\n" +
-        "46,2106,10138923,4,2019-10-21 17:29:10,\n" +
-        "47,2110,10138923,4,2019-10-22 10:03:21,\n" +
-        "48,2114,10138923,4,2019-10-22 10:20:43,\n" +
-        "49,2116,10138923,4,2019-10-22 10:23:01,\n" +
-        "50,2118,2,4,2019-10-22 10:45:38,\n" +
-        "51,2125,2,4,2019-10-22 11:20:48,\n" +
-        "52,2126,10138923,4,2019-10-22 11:21:20,\n" +
-        "53,2127,10138923,4,2019-10-22 11:21:42,\n" +
-        "54,2128,10138923,4,2019-10-22 11:22:41,\n" +
-        "55,2129,10138923,4,2019-10-22 11:24:33,\n" +
-        "56,2130,10009172,4,2019-10-22 11:58:47,\n" +
-        "57,2132,0,4,2019-10-22 13:01:14,"
-
-    assignText(testCSV);
-}
-
-function assignText(s) {
-    document.getElementById('txt1').value = s;
-    reprocessCsv();
-}
-
-function parseAndSort() {
-    spinit.spin(document.getElementById('divSpinner'));
-    parse(CSV);
-    showGrid();
-    spinit.stop(document.getElementById('divSpinner'));
-}
-
-function parse(CSV) {
-    var dateFound = 0;
-
-    CSV.parse(document.getElementById(`txt1`).value);
-    if (false && CSV[`detectedQuote`] !== CSV[`quote`]) {
-        CSV.quote = CSV.detectedQuote;
-        CSV.parse(document.getElementById(`txt1`).value);
-        if (document[`getElementById`](`chkInputQuote`)) {
-            document[`getElementById`](`chkInputQuote`)[`checked`] = CSV[`detectedQuote`] === `'`
-        }
-    }
-    for (j = 0; j < CSV.maxColumnsFound; j++) {
-        if (CSV[`statsCnt`][j] && CSV[`statsCnt`][j][`fieldType`] === `D`) {
-            dateFound++
-        }
-    }
-    if (detCsvDateFormat && dateFound > 0) {
-        detCsvDateFormat(CSV)
-    } else {
-        CSV[`dateformat`] = undefined
-    }
-}
 
 function detCsvDateFormat(CSV) {
     var i, j, k;
@@ -84,8 +18,6 @@ function detCsvDateFormat(CSV) {
                     if(moment(v,fmts[i],true).isValid()) fmtc[i]++;
                 }
             }
-            //alert(JSON.stringify(fmtc));
-            // find index of largest count
             var max = fmtc[0];
             var maxIndex = 0;
 
@@ -100,80 +32,10 @@ function detCsvDateFormat(CSV) {
             }
         } // date found
     }
-    //alert(JSON.stringify(CSV.dateformat));
 }
 
-function reprocessCsv() {
-    spinit.spin(document.getElementById('divSpinner'));
-    _.delay(parseAndSort, 300);
-}
 
-function showGrid() {
-    var availableWidth = null;
-    var availableHeight = null;
 
-    var calculateSize = function () {
-        availableWidth = 1200;
-        availableHeight = 1000;
-    };
-
-    const dataTable = $("#dataTable");
-    dataTable.handsontable({
-        data: (document.getElementById('txt1').value === "") ? [[]] : CSV.table || [],
-        startRows: 15,
-        startCols: (1 > CSV.maxColumnsFound) ? CSV.maxColumnsFound : 1,
-        minCols: 1,
-        minRows: 1,
-        manualColumnResize: true,
-        manualColumnMove: true,
-        columnSorting: true,
-        cells: function (row, col, prop) {
-            if (!CSV.statsCnt) return;
-            if (col >= CSV.statsCnt.length) return;
-            if (CSV.statsCnt[col].fieldType === "I" || CSV.statsCnt[col].fieldType === "N") {
-                this.type = "numeric";
-                if (CSV.statsCnt[col].fieldDecs > 0) this.format = "0." + "0".repeat(CSV.statsCnt[col].fieldDecs);
-            }
-        },
-        filters: true,
-        dropdownMenu: ['filter_by_condition', 'filter_action_bar'],
-        colHeaders: (document.getElementById('txt1').value === "" || !CSV.isFirstRowHeader) ? [] : CSV.arHeaderRow,
-        rowHeaders: true,
-        contextMenu: true,
-        scrollH: 'auto',
-        scrollV: 'auto',
-        stretchH: 'all',
-        minSpareRows: 1,
-        minSpareCols: 1,
-        autoWrapRow: false,
-        width: function () {
-            if (!availableWidth) {
-                calculateSize();
-            }
-            return availableWidth || 800;
-        },
-        height: function () {
-            if (!availableHeight) calculateSize();
-            return availableHeight || 600;
-        }
-    });
-    var cols = [];
-    var setit = false;
-    if (CSV.table.length > 0) {
-        for (j = 0; j < CSV.table[0].length; j++) {
-            cols.push({});
-            if (j < CSV.statsCnt.length && (CSV.statsCnt[j].fieldType === "N" || CSV.statsCnt[j].fieldType === "I")) {
-                cols[j].type = "numeric";
-                setit = true;
-            }
-        }
-        if (setit) {
-            dataTable.handsontable("updateSettings", {columns: cols});
-        }
-    }
-    dataTable.handsontable("selectCell", 0, 0);
-    dataTable.handsontable("render");
-}
 
 function ieReadLocalFile(that) {
     if(!that.value)return;
@@ -240,3 +102,12 @@ const spinit = {
         spinit.spinner.stop();
     }
 };
+
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, '\\$&');
+    let regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'), results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, ' '));
+}

@@ -1,5 +1,6 @@
 package com.csvParser;
 
+import com.csvParser.services.DBService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
@@ -11,6 +12,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import java.io.IOException;
+
 @EnableScheduling
 @EnableAsync
 @EnableCaching
@@ -18,12 +21,20 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class Application {
 
 	private static ConfigurableApplicationContext context;
-	private static String[] args;
 
 	public static void main(String[] args)  {
-		Application.args = args;
 
 		context = SpringApplication.run(Application.class, args);
+
+		test();
+	}
+
+	private static void test(){
+		try {
+			context.getBean(DBService.class).importData("bpdcbcmhkmfsrht");
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Bean

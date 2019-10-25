@@ -24,11 +24,11 @@ public class StorageService extends LoggableService {
     @Value("${fineUploader.finalDir}")
     private String finalDir;
 
-    private Path getDownloadPath(){
+    public Path getDownloadPath(){
         return Paths.get(downloadDir);
     }
 
-    private Path getFinalPath(){
+    public Path getFinalPath(){
         return Paths.get(finalDir);
     }
 
@@ -84,6 +84,8 @@ public class StorageService extends LoggableService {
                 Files.createDirectories(finalFilePath.getParent());
 
                 Files.move(currentFilePath, finalFilePath);
+
+                FileSystemUtils.deleteRecursively(getDownloadPath().resolve(uuid).toFile());
             }
         } catch (IOException e) {
             e.printStackTrace();

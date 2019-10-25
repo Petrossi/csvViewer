@@ -1,12 +1,12 @@
 package com.csvParser.controllers;
 
-import com.csvParser.services.abstraction.TaskService;
+import com.csvParser.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class TaskController {
@@ -14,16 +14,17 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
-    @RequestMapping(value = "task/{token}", method = RequestMethod.GET)
+    @RequestMapping(value = "/task/{token}", method = RequestMethod.GET)
     public String show(@PathVariable String token, Model model) {
 
-        model.addAttribute("task", taskService.findByToken(token));
+        model.addAttribute("token", token);
 
         return "task";
     }
-    @RequestMapping(value = "task/data/{token}", method = RequestMethod.GET)
-    public String getData(@PathVariable String token) {
 
-        return taskService.getData(token);
+    @GetMapping(value="/task/data/{token}", produces = { MediaType.TEXT_PLAIN_VALUE })
+    @ResponseBody
+    public ResponseEntity<String> getData(@PathVariable String token) {
+        return ResponseEntity.ok().body(taskService.getData(token));
     }
 }

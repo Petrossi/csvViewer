@@ -1,10 +1,15 @@
 package com.csvParser.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.TypeDef;
+import org.hibernate.annotations.TypeDefs;
 
 import javax.persistence.*;
 
 @Entity
+@TypeDefs({
+    @TypeDef(typeClass = StringArrayType.class, defaultForType = String[].class)
+})
 public class Task {
 
     public enum STATUS {
@@ -20,7 +25,11 @@ public class Task {
     private String token;
 
     private String originFileName;
+
     private STATUS status;
+
+    @Column(name = "subject", columnDefinition = "text[]")
+    private String[] headers;
 
     @Transient
     private boolean success;
@@ -58,5 +67,12 @@ public class Task {
     }
     public void setSuccess(boolean success) {
         this.success = success;
+    }
+
+    public String[] getHeaders() {
+        return headers;
+    }
+    public void setHeaders(String[] headers) {
+        this.headers = headers;
     }
 }

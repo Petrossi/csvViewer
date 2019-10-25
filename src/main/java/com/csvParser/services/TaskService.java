@@ -1,10 +1,13 @@
-package com.csvParser.services.abstraction;
+package com.csvParser.services;
 
 import com.csvParser.models.Task;
 import com.csvParser.repositories.TaskRepository;
 import com.csvParser.services.fineuploader.StorageService;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.io.IOException;
 
 @Service
 public class TaskService {
@@ -15,15 +18,21 @@ public class TaskService {
     @Autowired
     private StorageService storageService;
 
-    public Task create(String uuid, String fileName){
+    @Autowired
+    private DBService dbService;
+
+    public Task create(String uuid, String fileName) throws IOException {
+        storageService.moveToFinalDir(uuid, fileName);
+
         Task task = new Task();
-        task.setToken(uuid);
+        task.setToken(RandomStringUtils.randomAlphabetic(15).toLowerCase());
         task.setOriginFileName(fileName);
         task.setStatus(Task.STATUS.IN_PROGRESS);
         task.setSuccess(true);
+        task.setHeaders(dbService.getFistRow(task.getOriginFileName()));
+
 
         taskRepository.save(task);
-        storageService.moveToFinalDir(uuid, fileName);
 
         return task;
     }
@@ -35,6 +44,6 @@ public class TaskService {
     public String getData(String token) {
         Task task = findByToken(token);
 
-        return "";
+        return dbService.parseData(task.getToken());
     }
 }

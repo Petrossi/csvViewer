@@ -74,5 +74,5 @@ proxy:
   updateDelay: 600000
 
 fineUploader:
-  downloadDir: ./uploads
-  finalDir: ./finalDir
+  downloadDir: ./store/uploads
+  finalDir: ./store/finalDir
