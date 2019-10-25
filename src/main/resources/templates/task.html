@@ -4,7 +4,7 @@
         <script src="http://www.convertcsv.com/js/grid/jquery.handsontable.full.js"></script>
         <style>
             .table-wrapper {
-                margin-top: 75px;
+                /*margin-top: 75px;*/
             }
 
             .buttons-wrapper {
@@ -26,10 +26,7 @@
 
     <div layout:fragment="content">
         <div class="row">
-            <!--<div class="col-md-10 col-md-offset-1 table-wrapper" id="spinner">-->
-                <!--<div id="divSpinner"></div>-->
-            <!--</div>-->
-            <div class="col-md-10 col-md-offset-1 table-wrapper" >
+            <div class="col-md-12 col-md-offset-0 table-wrapper" >
                 <div id="divSpinner"></div>
 
                 <div class="pagination-info-wrapper" id="paginationInfo" style="display: none">
@@ -151,7 +148,7 @@
                     scrollV: 'auto',
                     autoWrapRow: false,
                     stretchH: 'all',
-                    height: 400
+                    height: 800
                 });
                 dataTable.handsontable("selectCell", 0, 0);
                 dataTable.handsontable("render");

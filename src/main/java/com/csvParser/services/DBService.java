@@ -124,6 +124,8 @@ public class DBService extends AbstractService {
     }
 
     private void readAndSave(Task task) throws IOException {
+        executeQuery("TRUNCATE TABLE "+TASK_STORE_SCHEMA_NAME+"."+task.getToken()+" CONTINUE IDENTITY RESTRICT;");
+
         int batchCount = 200;
 
         CSVReader reader = getReader(task.getToken());

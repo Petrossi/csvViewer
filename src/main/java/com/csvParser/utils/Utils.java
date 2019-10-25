@@ -27,6 +27,15 @@ public class Utils {
             builder.append(ALPHA_NUMERIC_STRING.charAt(character));
         }
         return builder.toString();
+    }
 
+    public static String limit(String origin, int limit) {
+        if (origin == null) {
+            return null;
+        }
+        if (origin.length() > limit) {
+            origin = origin.substring(0, limit - 1);
+        }
+        return origin;
     }
 }
