@@ -22,15 +22,16 @@ public class TaskService {
     private DBService dbService;
 
     public Task create(String uuid, String fileName) throws IOException {
-        storageService.moveToFinalDir(uuid, fileName);
 
         Task task = new Task();
         task.setToken(RandomStringUtils.randomAlphabetic(15).toLowerCase());
         task.setOriginFileName(fileName);
         task.setStatus(Task.STATUS.IN_PROGRESS);
         task.setSuccess(true);
-        task.setHeaders(dbService.getFistRow(task.getOriginFileName()));
 
+        storageService.moveToFinalDir(task, uuid, fileName);
+
+        task.setHeaders(dbService.getFistRow(task.getToken()));
 
         taskRepository.save(task);
 

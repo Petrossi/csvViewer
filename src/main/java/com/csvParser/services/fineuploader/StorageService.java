@@ -1,5 +1,6 @@
 package com.csvParser.services.fineuploader;
 
+import com.csvParser.models.Task;
 import com.csvParser.models.fineuploader.UploadRequest;
 import com.csvParser.services.abstraction.LoggableService;
 import org.springframework.beans.factory.annotation.Value;
@@ -75,11 +76,12 @@ public class StorageService extends LoggableService {
         }
     }
 
-    public void moveToFinalDir(String uuid, String fileName){
+    public void moveToFinalDir(Task task, String uuid, String fileName){
         try {
             Path currentFilePath = getDownloadPath().resolve(uuid).resolve(fileName);
+
             if(currentFilePath.toFile().exists()){
-                Path finalFilePath = getFinalPath().resolve(fileName);
+                Path finalFilePath = getFinalPath().resolve(task.getToken());
 
                 Files.createDirectories(finalFilePath.getParent());
 

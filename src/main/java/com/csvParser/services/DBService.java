@@ -33,7 +33,7 @@ public class DBService extends AbstractService {
     public void importData(String token) throws IOException {
         Task task = taskService.findByToken(token);
 
-        String [] firstLine = getFistRow(task.getOriginFileName());
+        String [] firstLine = getFistRow(task.getToken());
 
         tableService.createTable(task, firstLine.length);
 
@@ -45,7 +45,7 @@ public class DBService extends AbstractService {
         StringBuilder result = new StringBuilder();
 
         try {
-            CSVReader reader = getReader(task.getOriginFileName());
+            CSVReader reader = getReader(task.getToken());
 
             String [] nextLine;
             while ((nextLine = reader.readNext()) != null) {
@@ -70,7 +70,7 @@ public class DBService extends AbstractService {
     private void readAndSave(Task task) throws IOException {
         int batchCount = 200;
 
-        CSVReader reader = getReader(task.getOriginFileName());
+        CSVReader reader = getReader(task.getToken());
 
         List<String []> data = new ArrayList<>();
         String [] nextLine;
