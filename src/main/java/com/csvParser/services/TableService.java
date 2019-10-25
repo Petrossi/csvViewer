@@ -4,21 +4,21 @@ import com.csvParser.models.Task;
 import com.csvParser.services.abstraction.AbstractService;
 import org.springframework.stereotype.Component;
 
+import java.util.Arrays;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Component
 public class TableService extends AbstractService {
     public static final String TASK_STORE_SCHEMA_NAME = "task";
 
-    public void createTable(Task task, int columnCount){
+    public void createTable(Task task){
         String tableName = TASK_STORE_SCHEMA_NAME +"."+task.getToken();
 
         if(tableExists(tableName)){
             return;
         }
-        String columnsSql = IntStream.range(0, columnCount )
-            .mapToObj(i -> "column_"+String.valueOf(i)+" varchar(500)")
+        String columnsSql = Arrays.stream(task.getHeaders())
+            .map(column -> column + " varchar(500)")
             .collect(Collectors.joining(",\n"))
             + " \n"
         ;

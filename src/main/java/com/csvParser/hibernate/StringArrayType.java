@@ -27,8 +27,6 @@ public class StringArrayType
  
     @Override
     public void setParameterValues(Properties parameters) {
-        ((StringArrayTypeDescriptor)
-            getJavaTypeDescriptor())
-            .setParameterValues(parameters);
+        ((StringArrayTypeDescriptor) getJavaTypeDescriptor()).setParameterValues(parameters);
     }
 }

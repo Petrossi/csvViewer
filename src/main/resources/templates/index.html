@@ -117,7 +117,9 @@
             },
             callbacks: {
                 onComplete: function(id, name, responseJSON, ) {
-                    window.location = "/task/" + responseJSON.token
+                    if(responseJSON.token !== undefined){
+                        window.location = "/task/" + responseJSON.token
+                    }
                 }
             },
             validation: {

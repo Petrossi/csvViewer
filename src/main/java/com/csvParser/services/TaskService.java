@@ -1,5 +1,6 @@
 package com.csvParser.services;
 
+import com.csvParser.common.pagination.task.TaskDataPaginationConfig;
 import com.csvParser.models.Task;
 import com.csvParser.repositories.TaskRepository;
 import com.csvParser.services.fineuploader.StorageService;
@@ -8,6 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class TaskService {
@@ -31,9 +35,15 @@ public class TaskService {
 
         storageService.moveToFinalDir(task, uuid, fileName);
 
-        task.setHeaders(dbService.getFistRow(task.getToken()));
+        int size = dbService.getFistRow("mitmbrqbkuapfxm").length;
+        List<String> g = IntStream.range(0, size).boxed().collect(Collectors.toList()).stream().map(i -> "column_" + i).map(String::valueOf).collect(Collectors.toList());
+
+        String[] headers = new String[g.size()];
+        headers = g.toArray(headers);
+        task.setHeaders(headers);
 
         taskRepository.save(task);
+        dbService.importData(task);
 
         return task;
     }
@@ -46,5 +56,9 @@ public class TaskService {
         Task task = findByToken(token);
 
         return dbService.parseData(task.getToken());
+    }
+
+    public String getData(TaskDataPaginationConfig config) {
+        return dbService.parseData(config);
     }
 }

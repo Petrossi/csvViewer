@@ -1,5 +1,6 @@
 package com.csvParser.services;
 
+import com.csvParser.common.pagination.task.TaskDataPaginationConfig;
 import com.csvParser.models.Task;
 import com.csvParser.services.abstraction.AbstractService;
 import com.csvParser.services.fineuploader.StorageService;
@@ -30,12 +31,8 @@ public class DBService extends AbstractService {
     @Autowired
     protected StorageService storageService;
 
-    public void importData(String token) throws IOException {
-        Task task = taskService.findByToken(token);
-
-        String [] firstLine = getFistRow(task.getToken());
-
-        tableService.createTable(task, firstLine.length);
+    public void importData(Task task) throws IOException {
+        tableService.createTable(task);
 
         readAndSave(task);
     }
@@ -59,6 +56,21 @@ public class DBService extends AbstractService {
         return result.toString();
     }
 
+    public String parseData(TaskDataPaginationConfig config) {
+        Task task = taskService.findByToken(config.getToken());
+
+//        String sql = new SQLBuilder()
+//                .setSelect("(CASE WHEN COUNT(*) > 0 THEN '+' ELSE '-' END)")
+//                .setFromTable(task.getToken())
+//                .setFromSchema(TASK_STORE_SCHEMA_NAME)
+//                .setFromTableAlias("fps")
+//                .setJoins("INNER JOIN " + finalPageService.getTableNameWithSchema(domain, TABLE_PREFIX) + " rfp on fp.id = rfp.id")
+//                .setWhere(newFilterWhere.replace("fp.", "fps."))
+//                .andWhere("fp.id = fps.id")
+//                .buildSql();
+
+        return "";
+    }
     private CSVReader getReader(String fileName) throws FileNotFoundException {
         return new CSVReader(new FileReader(storageService.getFinalPath().resolve(fileName).toFile()));
     }
@@ -88,7 +100,6 @@ public class DBService extends AbstractService {
             taskImporterService.insertData(task, data);
         }
     }
-
 
     public List getColumnsList(String sqlToGetData, List<String> columns){
         return jdbcTemplate.query(

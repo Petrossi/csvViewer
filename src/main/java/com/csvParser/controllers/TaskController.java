@@ -1,5 +1,6 @@
 package com.csvParser.controllers;
 
+import com.csvParser.common.pagination.task.TaskDataPaginationConfig;
 import com.csvParser.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -26,5 +27,11 @@ public class TaskController {
     @ResponseBody
     public ResponseEntity<String> getData(@PathVariable String token) {
         return ResponseEntity.ok().body(taskService.getData(token));
+    }
+
+    @GetMapping(value="/task/data/pagination/", produces = { MediaType.APPLICATION_JSON_VALUE })
+    @ResponseBody
+    public ResponseEntity<String> getPaginationData(@RequestBody TaskDataPaginationConfig config) {
+        return ResponseEntity.ok().body(taskService.getData(config));
     }
 }

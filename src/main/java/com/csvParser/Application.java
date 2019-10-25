@@ -1,6 +1,5 @@
 package com.csvParser;
 
-import com.csvParser.services.DBService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
@@ -22,19 +21,17 @@ public class Application {
 
 	private static ConfigurableApplicationContext context;
 
-	public static void main(String[] args)  {
+	public static void main(String[] args) throws IOException {
 
 		context = SpringApplication.run(Application.class, args);
-
-		test();
 	}
 
 	private static void test(){
-		try {
-			context.getBean(DBService.class).importData("bpdcbcmhkmfsrht");
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			context.getBean(DBService.class).importData("bpdcbcmhkmfsrht");
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 	}
 
 	@Bean
