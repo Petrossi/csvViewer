@@ -1,6 +1,5 @@
 package com.csvParser.services;
 
-import com.csvParser.common.pagination.task.TaskDataPaginationConfig;
 import com.csvParser.models.Task;
 import com.csvParser.repositories.TaskRepository;
 import com.csvParser.services.fineuploader.StorageService;
@@ -56,9 +55,5 @@ public class TaskService {
         Task task = findByToken(token);
 
         return dbService.parseData(task.getToken());
-    }
-
-    public String getData(TaskDataPaginationConfig config) {
-        return dbService.parseData(config);
     }
 }

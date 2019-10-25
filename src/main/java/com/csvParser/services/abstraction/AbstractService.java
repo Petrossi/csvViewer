@@ -68,11 +68,11 @@ public abstract class AbstractService extends LoggableService{
         }
     }
 
-    protected long getCountBySql(String sql){
+    protected int getCountBySql(String sql){
         return getCountBySql(sql, new Object[] {  });
     }
 
-    protected long getCountBySql(String sql, Object[] args){
+    protected int getCountBySql(String sql, Object[] args){
         return jdbcTemplate.queryForObject(sql, args, Integer.class);
     }
 

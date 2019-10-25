@@ -3,7 +3,9 @@ package com.csvParser.utils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import org.json.JSONObject;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.Type;
 
 /**
@@ -43,5 +45,26 @@ public class JsonConverter {
     public static String convertToJson(Object toConvert) {
 
         return gson.toJson(toConvert);
+    }
+    /**
+     * This method serializes the specified object into its equivalent Json
+     * representation.
+     */
+    public static JSONObject convertToJsonObject(Object toConvert) {
+        JSONObject r = new JSONObject();
+
+        for (Field field : toConvert.getClass().getDeclaredFields()) {
+            field.setAccessible(true);
+            String name = field.getName();
+            Object value = null;
+            try {
+                value = field.get(toConvert);
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
+            }
+            r.put(name, value);
+        }
+
+        return r;
     }
 }

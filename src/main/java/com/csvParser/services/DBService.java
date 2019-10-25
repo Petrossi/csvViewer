@@ -1,11 +1,13 @@
 package com.csvParser.services;
 
-import com.csvParser.common.pagination.task.TaskDataPaginationConfig;
+import com.csvParser.common.request.task.TaskDataPaginationConfig;
+import com.csvParser.common.response.TaskDataResponse;
 import com.csvParser.models.Task;
 import com.csvParser.services.abstraction.AbstractService;
 import com.csvParser.services.fineuploader.StorageService;
 import com.csvParser.utils.JsonConverter;
 import liquibase.util.csv.CSVReader;
+import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -64,16 +66,46 @@ public class DBService extends AbstractService {
     public String parseData(TaskDataPaginationConfig config) {
         Task task = taskService.findByToken(config.getToken());
 
+        SQLBuilder builder = new SQLBuilder()
+            .setSelect(Arrays.stream(task.getHeaders()).collect(Collectors.joining(",")))
+            .setFromTable(task.getToken())
+            .setFromSchema(TASK_STORE_SCHEMA_NAME)
+            .setFromTableAlias("t")
+        ;
+
+        if(config.getPageSize() != -1){
+            builder.setLimit(config.getPageSize());
+            builder.setOffset( config.getPageSize() * (config.getPage() - 1));
+        }
+
+        JSONArray summary = getColumnsList(builder.buildSql(), Arrays.asList(task.getHeaders()));
+
+        int totalCount = getTotalCount(task);
+        int filteredCount = summary.length();
+        int pages = config.getPageSize() == -1 ? 1 : filteredCount % config.getPageSize() == 0 ? filteredCount/config.getPageSize() : filteredCount/config.getPageSize() + 1;
+
+        TaskDataResponse response = new TaskDataResponse(
+            true,
+            "success",
+            summary,
+            totalCount,
+            summary.length(),
+            pages
+        );
+
+        return JsonConverter.convertToJsonObject(response).toString();
+    }
+
+    public int getTotalCount(Task task){
         String sql = new SQLBuilder()
-                .setSelect(Arrays.stream(task.getHeaders()).collect(Collectors.joining(",")))
-                .setFromTable(task.getToken())
-                .setFromSchema(TASK_STORE_SCHEMA_NAME)
-                .setFromTableAlias("t")
-                .buildSql();
+            .setSelect("count(*)")
+            .setFromTable(task.getToken())
+            .setFromSchema(TASK_STORE_SCHEMA_NAME)
+            .setFromTableAlias("t")
+            .buildSql()
+        ;
 
-        List result = getColumnsList(sql, Arrays.asList(task.getHeaders()));
-
-        return JsonConverter.convertToJson(result);
+        return getCountBySql(sql);
     }
 
     private CSVReader getReader(String fileName) throws FileNotFoundException {
@@ -106,8 +138,8 @@ public class DBService extends AbstractService {
         }
     }
 
-    public List getColumnsList(String sqlToGetData, List<String> columns){
-        return jdbcTemplate.query(
+    public JSONArray getColumnsList(String sqlToGetData, List<String> columns){
+        return new JSONArray(jdbcTemplate.query(
             sqlToGetData,
             (rs, rowNum) -> {
                 JSONObject incomingObj = new JSONObject();
@@ -122,6 +154,6 @@ public class DBService extends AbstractService {
 
                 return incomingObj;
             }
-        );
+        ));
     }
 }

@@ -1,4 +1,4 @@
-package com.csvParser.common.pagination;
+package com.csvParser.common.request;
 
 public abstract class PaginationConfig {
 

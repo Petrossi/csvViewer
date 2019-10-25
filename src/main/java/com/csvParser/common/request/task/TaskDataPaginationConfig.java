@@ -1,6 +1,6 @@
-package com.csvParser.common.pagination.task;
+package com.csvParser.common.request.task;
 
-import com.csvParser.common.pagination.TokenPaginationConfig;
+import com.csvParser.common.request.TokenPaginationConfig;
 
 public class TaskDataPaginationConfig extends TokenPaginationConfig {
 
