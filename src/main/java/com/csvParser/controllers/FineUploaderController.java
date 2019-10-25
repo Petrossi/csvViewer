@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+
 @RestController
 public class FineUploaderController {
 
@@ -39,7 +41,14 @@ public class FineUploaderController {
 
         storageService.save(request);
         if(totalParts == -1){
-            Task task = taskService.create(uuid, fileName);
+            Task task;
+            try {
+                task = taskService.create(uuid, fileName);
+            } catch (IOException e) {
+                e.printStackTrace();
+
+                return ResponseEntity.ok().body(new UploadResponse(false, e.getMessage()));
+            }
 
             return ResponseEntity.ok().body(task);
         }
@@ -63,14 +72,22 @@ public class FineUploaderController {
 
     @CrossOrigin
     @PostMapping("/chunksdone")
-    public ResponseEntity<Task> chunksDone(
+    public ResponseEntity<?> chunksDone(
             @RequestParam("qquuid") String uuid,
             @RequestParam("qqfilename") String fileName,
             @RequestParam(value = "qqtotalparts") int totalParts){
 
         storageService.mergeChunks(uuid, fileName, totalParts);
 
-        Task task = taskService.create(uuid, fileName);
+        Task task = null;
+        try {
+            task = taskService.create(uuid, fileName);
+        } catch (IOException e) {
+            e.printStackTrace();
+
+            return ResponseEntity.ok().body(new UploadResponse(false, e.getMessage()));
+
+        }
 
         return ResponseEntity.ok().body(task);
     }
