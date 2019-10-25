@@ -82,7 +82,14 @@ public class DBService extends AbstractService {
 
         int totalCount = getTotalCount(task);
         int filteredCount = summary.length();
-        int pages = config.getPageSize() == -1 ? 1 : filteredCount % config.getPageSize() == 0 ? filteredCount/config.getPageSize() : filteredCount/config.getPageSize() + 1;
+        int pages = 1;
+        if( config.getPageSize() != -1){
+            if(filteredCount % config.getPageSize() == 0){
+                pages = totalCount/config.getPageSize();
+            }else{
+                pages = totalCount/config.getPageSize() + 1;
+            }
+        }
 
         TaskDataResponse response = new TaskDataResponse(
             true,

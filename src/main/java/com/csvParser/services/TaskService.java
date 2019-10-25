@@ -34,7 +34,7 @@ public class TaskService {
 
         storageService.moveToFinalDir(task, uuid, fileName);
 
-        int size = dbService.getFistRow("mitmbrqbkuapfxm").length;
+        int size = dbService.getFistRow(task.getToken()).length;
         List<String> g = IntStream.range(0, size).boxed().collect(Collectors.toList()).stream().map(i -> "column_" + i).map(String::valueOf).collect(Collectors.toList());
 
         String[] headers = new String[g.size()];

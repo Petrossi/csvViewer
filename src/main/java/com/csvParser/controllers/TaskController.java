@@ -1,6 +1,7 @@
 package com.csvParser.controllers;
 
 import com.csvParser.common.request.task.TaskDataPaginationConfig;
+import com.csvParser.models.Task;
 import com.csvParser.services.DBService;
 import com.csvParser.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +23,9 @@ public class TaskController {
     @RequestMapping(value = "/task/{token}", method = RequestMethod.GET)
     public String show(@PathVariable String token, Model model) {
 
-        model.addAttribute("token", token);
+        Task task = taskService.findByToken(token);
+
+        model.addAttribute("task", task);
 
         return "task";
     }
