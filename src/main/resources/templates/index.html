@@ -1,6 +1,17 @@
 <html layout:decorator="core/layout" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <div layout:fragment="content">
-    <div id="fine-uploader-manual-trigger"></div>
+    <div class="row">
+        <div class="col-md-12 col-md-offset-0 table-wrapper" id="fineUploader">
+            <div id="fine-uploader-manual-trigger"></div>
+        </div>
+        <div class="col-md-12 col-md-offset-0 table-wrapper" id="processProgressBar" style="display:none;">
+            <span>Processing file data <span id="processedCount"></span></span>
+            <div class="progress">
+                <div class="progress-bar" style="width: 0;" id="progress"></div>
+                <span id="progressInfo">0%</span>
+            </div>
+        </div>
+    </div>
 </div>
 <div layout:fragment="header_sources">
     <link th:href="@{/static/stylesheets/fine-uploader-new.css}" rel="stylesheet">
@@ -8,6 +19,19 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.0.0/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
+    <style>
+        .progress {
+            position:relative;
+        }
+        .progress span {
+            position:absolute;
+            left:0;
+            width:100%;
+            text-align:center;
+            z-index:2;
+            color:indianred;
+        }
+    </style>
     <script type="text/template" id="qq-template-manual-trigger">
         <div class="qq-uploader-selector qq-uploader" qq-drop-area-text="Drop files here">
             <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
@@ -93,26 +117,34 @@
             width: 60%;
         }
     </style>
+
 </div>
 <div layout:fragment="body_sources">
     <script>
-        testWS();
-        function testWS() {
-            const token = "1111";
+        // processTask("ymqeoxrgfhkbryb");
+        function processTask(token) {
+            $('#fineUploader').hide();
+            $('#processProgressBar').show();
 
-            stompClient = Stomp.over(new SockJS('/ws'));
-            // stompClient.debug = function () {};
-
+            var socket = new SockJS('http://localhost:8090//ws');
+            const stompClient = Stomp.over(socket);
+            stompClient.debug = function () {};
             stompClient.connect({}, function () {
-                stompClient.subscribe('/channel/app/parsingProgress' + token, function (message) {
-                    console.log(message);
-
+                stompClient.subscribe('/channel/app/parsingProgress/' + token, function (message) {
                     if (!message.body) {
                         return;
                     }
 
-                    if(false){
-                        stompClient.disconnect();
+                    const body = JSON.parse(message.body);
+
+                    if(body.status === "FINISHED"){
+                        window.location = "/task/" + token
+                    }else{
+                        const percent = (body.processedCount/(body.totalCount/100)).toFixed(2);
+
+                        $('#progress').css({width: percent + "%"});
+                        $('#progressInfo').text(`${percent} %`);
+                        $('#processedCount').text(`${body.processedCount} of ${body.totalCount}`);
                     }
                 });
 
@@ -145,7 +177,7 @@
             callbacks: {
                 onComplete: function(id, name, responseJSON, ) {
                     if(responseJSON.token !== undefined){
-                        window.location = "/task/" + responseJSON.token
+                        processTask(responseJSON.token)
                     }
                 }
             },

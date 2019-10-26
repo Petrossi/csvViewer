@@ -1,7 +1,7 @@
 package com.csvParser.models;
 
 import com.csvParser.hibernate.StringArrayType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
+//import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
@@ -20,7 +20,7 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @JsonIgnore
+//    @JsonIgnore
     private Long id;
 
     private String token;

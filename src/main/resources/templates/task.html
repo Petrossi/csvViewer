@@ -129,7 +129,7 @@
                     <button class="btn btn-primary paginationButton" ${paginationInfo.page - 1 <= 0 ? 'disabled' : 'data-page=' + (paginationInfo.page -1)}>${paginationInfo.page - 1}</button>
                     <button class="btn btn-success paginationButton" disabled>${paginationInfo.page}</button>
                     <button class="btn btn-primary paginationButton" ${paginationInfo.page + 1 > data.pages ? 'disabled' : "data-page=" + (paginationInfo.page + 1)}>${paginationInfo.page + 1}</button>
-                    <button class="btn btn-warning paginationButton" data-page="${paginationInfo.page}">last</button>
+                    <button class="btn btn-warning paginationButton" data-page="${data.pages}">last</button>
                 `);
 
                 $(".paginationButton").click(function (){

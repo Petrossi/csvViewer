@@ -10,6 +10,7 @@ import liquibase.util.csv.CSVReader;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 
 import java.io.FileNotFoundException;
@@ -38,6 +39,9 @@ public class DBService extends AbstractService {
 
     @Autowired
     protected StorageService storageService;
+
+    @Autowired
+    protected SimpMessagingTemplate messagingTemplate;
 
     public void importData(Task task) throws IOException {
         tableService.createTable(task);
@@ -130,9 +134,10 @@ public class DBService extends AbstractService {
 
     private void readAndSave(Task task) throws IOException {
         executeQuery("TRUNCATE TABLE "+TASK_STORE_SCHEMA_NAME+"."+task.getToken()+" CONTINUE IDENTITY RESTRICT;");
+        String urlToSend = "/channel/app/parsingProgress/" + task.getToken();
 
         int batchCount = 200;
-
+        int processedCount = 0;
         CSVReader reader = getReader(task.getToken());
 
         List<String []> data = new ArrayList<>();
@@ -144,12 +149,22 @@ public class DBService extends AbstractService {
             if(data.size() == batchCount){
                 taskImporterService.insertData(task, data);
                 data.clear();
+
+                processedCount += batchCount;
+
+                messagingTemplate.convertAndSend(urlToSend, new JSONObject()
+                    .put("status", Task.STATUS.IN_PROGRESS)
+                    .put("processedCount", processedCount)
+                    .put("totalCount", task.getRowCount()).toString()
+                );
             }
         }
 
         if(!data.isEmpty()){
             taskImporterService.insertData(task, data);
         }
+
+        messagingTemplate.convertAndSend(urlToSend, new JSONObject().put("status", Task.STATUS.FINISHED).toString());
     }
 
     public JSONArray getColumnsList(String sqlToGetData, List<String> columns){
