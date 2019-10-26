@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -117,6 +118,10 @@ public class DBService extends AbstractService {
 
     private CSVReader getReader(String fileName) throws FileNotFoundException {
         return new CSVReader(new FileReader(storageService.getFinalPath().resolve(fileName).toFile()));
+    }
+
+    public long getFileRowCount(String fileName) throws IOException {
+        return Files.lines(storageService.getFinalPath().resolve(fileName)).count();
     }
 
     public String [] getFistRow(String fileName) throws IOException {

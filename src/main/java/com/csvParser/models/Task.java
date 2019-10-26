@@ -32,6 +32,8 @@ public class Task {
     @Column(name = "subject", columnDefinition = "text[]")
     private String[] headers;
 
+    private long rowCount;
+
     @Transient
     private boolean success;
 
@@ -75,5 +77,12 @@ public class Task {
     }
     public void setHeaders(String[] headers) {
         this.headers = headers;
+    }
+
+    public long getRowCount() {
+        return rowCount;
+    }
+    public void setRowCount(long rowCount) {
+        this.rowCount = rowCount;
     }
 }

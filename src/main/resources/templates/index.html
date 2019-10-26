@@ -5,6 +5,8 @@
 <div layout:fragment="header_sources">
     <link th:href="@{/static/stylesheets/fine-uploader-new.css}" rel="stylesheet">
     <script th:src="@{/static/javascripts/all.fine-uploader.min.js}"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.0.0/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
     <script type="text/template" id="qq-template-manual-trigger">
         <div class="qq-uploader-selector qq-uploader" qq-drop-area-text="Drop files here">
@@ -93,6 +95,31 @@
     </style>
 </div>
 <div layout:fragment="body_sources">
+    <script>
+        testWS();
+        function testWS() {
+            const token = "1111";
+
+            stompClient = Stomp.over(new SockJS('/ws'));
+            // stompClient.debug = function () {};
+
+            stompClient.connect({}, function () {
+                stompClient.subscribe('/channel/app/parsingProgress' + token, function (message) {
+                    console.log(message);
+
+                    if (!message.body) {
+                        return;
+                    }
+
+                    if(false){
+                        stompClient.disconnect();
+                    }
+                });
+
+                $.get("/task/process/" + token)
+            });
+        }
+    </script>
     <script>
         const manualUploader = new qq.FineUploader({
             element: document.getElementById('fine-uploader-manual-trigger'),

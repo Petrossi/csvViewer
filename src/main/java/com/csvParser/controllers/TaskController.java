@@ -7,9 +7,14 @@ import com.csvParser.services.TaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.stream.IntStream;
+
+import static com.csvParser.utils.Utils.sleepSeconds;
 
 @Controller
 public class TaskController {
@@ -19,6 +24,9 @@ public class TaskController {
 
     @Autowired
     private DBService dbService;
+
+    @Autowired
+    protected SimpMessagingTemplate messagingTemplate;
 
     @RequestMapping(value = "/task/{token}", method = RequestMethod.GET)
     public String show(@PathVariable String token, Model model) {
@@ -52,5 +60,25 @@ public class TaskController {
     @ResponseBody
     public ResponseEntity<String> getPaginationData(@RequestBody TaskDataPaginationConfig config) {
         return ResponseEntity.ok().body(dbService.parseData(config));
+    }
+
+
+    @GetMapping(value="/task/process/{token}", produces = { MediaType.TEXT_PLAIN_VALUE })
+    @ResponseBody
+    public ResponseEntity<String> test(@PathVariable String token) {
+
+        String urlToSend = "/channel/process/parsingProgress/" + token;
+
+        new Thread(() -> {
+            sleepSeconds(2);
+            IntStream.range(0, 10).forEach(i -> {
+                messagingTemplate.convertAndSend(
+                        urlToSend,
+                        i * 10
+                );
+            });
+        }).start();
+
+        return ResponseEntity.ok().body("");
     }
 }

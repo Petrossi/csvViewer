@@ -36,7 +36,8 @@ public class TaskService {
 
         int size = dbService.getFistRow(task.getToken()).length;
         List<String> g = IntStream.range(0, size).boxed().collect(Collectors.toList()).stream().map(i -> "column_" + i).map(String::valueOf).collect(Collectors.toList());
-
+        long rowCount = dbService.getFileRowCount(task.getToken());
+        task.setRowCount(rowCount);
         String[] headers = new String[g.size()];
         headers = g.toArray(headers);
         task.setHeaders(headers);
