@@ -56,10 +56,9 @@ public class TaskController {
         return ResponseEntity.ok().body(dbService.parseData(config));
     }
 
-
     @GetMapping(value="/task/process/{token}", produces = { MediaType.TEXT_PLAIN_VALUE })
     @ResponseBody
-    public ResponseEntity<String> test(@PathVariable String token) {
+    public ResponseEntity<String> process(@PathVariable String token) {
 
         new Thread(() -> {
             Task task = taskService.findByToken(token);
@@ -72,5 +71,11 @@ public class TaskController {
         }).start();
 
         return ResponseEntity.ok().body("");
+    }
+
+    @PostMapping(value="/task/updateHeaders/{token}", consumes = { MediaType.APPLICATION_JSON_VALUE }, produces = { MediaType.APPLICATION_JSON_VALUE })
+    @ResponseBody
+    public ResponseEntity<Task> updateHeaders(@PathVariable String token, @RequestBody String[] headers) {
+        return ResponseEntity.ok().body(taskService.updateHeaders(token, headers));
     }
 }

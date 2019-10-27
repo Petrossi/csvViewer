@@ -1,4 +1,5 @@
-<html layout:decorator="core/layout" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+<html layout:decorator="core/layout" xmlns:layout="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.w3.org/1999/xhtml">
 <div layout:fragment="content">
     <div class="row">
         <div class="col-md-12 col-md-offset-0 table-wrapper" id="fineUploader">
@@ -16,21 +17,24 @@
         <div id="stepper1" class="bs-stepper">
             <div class="bs-stepper-header" role="tablist">
                 <div class="step" data-target="#test-l-1">
-                    <button type="button" class="step-trigger" role="tab" id="stepper1trigger1" aria-controls="test-l-1">
+                    <button type="button" class="step-trigger" role="tab" id="stepper1trigger1"
+                            aria-controls="test-l-1">
                         <span class="bs-stepper-circle">1</span>
                         <span class="bs-stepper-label">Upload file</span>
                     </button>
                 </div>
                 <div class="bs-stepper-line"></div>
                 <div class="step" data-target="#test-l-2">
-                    <button type="button" class="step-trigger" role="tab" id="stepper1trigger2" aria-controls="test-l-2">
+                    <button type="button" class="step-trigger" role="tab" id="stepper1trigger2"
+                            aria-controls="test-l-2">
                         <span class="bs-stepper-circle">2</span>
                         <span class="bs-stepper-label">Select headers</span>
                     </button>
                 </div>
                 <div class="bs-stepper-line"></div>
                 <div class="step" data-target="#test-l-3">
-                    <button type="button" class="step-trigger" role="tab" id="stepper1trigger3" aria-controls="test-l-3">
+                    <button type="button" class="step-trigger" role="tab" id="stepper1trigger3"
+                            aria-controls="test-l-3">
                         <span class="bs-stepper-circle">3</span>
                         <span class="bs-stepper-label">Process</span>
                     </button>
@@ -39,16 +43,47 @@
             <div class="bs-stepper-content">
                 <div id="test-l-1" role="tabpanel" class="bs-stepper-pane" aria-labelledby="stepper1trigger1">
                     <div id="fine-uploader-manual-trigger"></div>
-                    <!--<button class="btn btn-primary" onclick="stepper.next()">Next</button>-->
                 </div>
                 <div id="test-l-2" role="tabpanel" class="bs-stepper-pane" aria-labelledby="stepper1trigger2">
-                    <div class="form-group">
+                    <div class="row">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" checked id="noHeadersCheckBox">
+                            <label class="form-check-label" for="noHeadersCheckBox">No headers</label>
+                        </div>
+                    </div>
+                    <div class="row noHeadersDiv headerComponent" style="padding-top: 15px">
+                        <div id="noHeaders" style="overflow: auto; vertical-align: top;" class="handsontable"></div>
+                    </div>
+
+                   <div class="row fileHeadersDiv" style="padding-top: 25px">
+                       <div class="form-check">
+                           <input class="form-check-input" type="checkbox" value="" id="fileHeadersCheckBox">
+                           <label class="form-check-label" for="fileHeadersCheckBox">Headers from file (first line from file)</label>
+                       </div>
+                    </div>
+                    <div class="row fileHeadersDiv div_disabled headerComponent" style="padding-top: 15px">
                         <div id="fileHeaders" style="overflow: auto; vertical-align: top;" class="handsontable"></div>
                     </div>
-                    <!--<button class="btn btn-primary" onclick="stepper.previous()">Previous</button>-->
-                    <!--<button class="btn btn-primary" onclick="stepper.next()">Next</button>-->
+
+                    <div class="row" style="padding-top: 25px">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="customHeadersCheckBox">
+                            <label class="form-check-label" for="customHeadersCheckBox">Custom headers (comma separated)</label>
+                        </div>
+                    </div>
+                    <div class="row customHeadersDiv div_disabled headerComponent" style="padding-top: 5px">
+                        <div class="form-group">
+                            <textarea class="form-control" id="customHeadersTextArea" rows="3"></textarea>
+                        </div>
+                        <div id="customHeaders" style="overflow: auto; vertical-align: top;display: none" class="handsontable"></div>
+                    </div>
+
+                    <div class="row" style="padding-top: 10px">
+                        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="applyHeaders()">Apply</button>
+                    </div>
                 </div>
-                <div id="test-l-3" role="tabpanel" class="bs-stepper-pane text-center" aria-labelledby="stepper1trigger3">
+                <div id="test-l-3" role="tabpanel" class="bs-stepper-pane text-center"
+                     aria-labelledby="stepper1trigger3">
                     <button class="btn btn-primary mt-5" onclick="stepper.previous()">Previous</button>
                     <button type="submit" class="btn btn-primary mt-5">Submit</button>
                 </div>
@@ -68,21 +103,28 @@
 
     <style>
         .progress {
-            position:relative;
+            position: relative;
         }
+
         .progress span {
-            position:absolute;
-            left:0;
-            width:100%;
-            text-align:center;
-            z-index:2;
-            color:indianred;
+            position: absolute;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            z-index: 2;
+            color: indianred;
+        }
+
+        .div_disabled {
+            pointer-events: none;
+            opacity: 0.4;
         }
     </style>
     <script type="text/template" id="qq-template-manual-trigger">
         <div class="qq-uploader-selector qq-uploader" qq-drop-area-text="Drop files here">
             <div class="qq-total-progress-bar-container-selector qq-total-progress-bar-container">
-                <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
+                <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                     class="qq-total-progress-bar-selector qq-progress-bar qq-total-progress-bar"></div>
             </div>
             <div class="qq-upload-drop-area-selector qq-upload-drop-area" qq-hide-dropzone>
                 <span class="qq-upload-drop-area-text-selector"></span>
@@ -102,12 +144,14 @@
             <ul class="qq-upload-list-selector qq-upload-list" aria-live="polite" aria-relevant="additions removals">
                 <li>
                     <div class="qq-progress-bar-container-selector">
-                        <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" class="qq-progress-bar-selector qq-progress-bar"></div>
+                        <div role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                             class="qq-progress-bar-selector qq-progress-bar"></div>
                     </div>
                     <span class="qq-upload-spinner-selector qq-upload-spinner"></span>
                     <img class="qq-thumbnail-selector" qq-max-size="100" qq-server-scale>
                     <span class="qq-upload-file-selector qq-upload-file"></span>
-                    <span class="qq-edit-filename-icon-selector qq-edit-filename-icon" aria-label="Edit filename"></span>
+                    <span class="qq-edit-filename-icon-selector qq-edit-filename-icon"
+                          aria-label="Edit filename"></span>
                     <input class="qq-edit-filename-selector qq-edit-filename" tabindex="0" type="text">
                     <span class="qq-upload-size-selector qq-upload-size"></span>
                     <button type="button" class="qq-btn qq-upload-cancel-selector qq-upload-cancel">Cancel</button>
@@ -174,26 +218,103 @@
 
         $(document).ready(function () {
             stepper = new Stepper($('.bs-stepper')[0])
-            // initHeaderSelect()
-            // initFinaUploader()
-            test()
+            initFinaUploader()
+            // test()
         });
 
         function test() {
-            var testTaskData = {"id":29,"token":"eyzqztvvajpqeln","originFileName":"newLTT_disavow_black_donor_domain.csv","status":"IN_PROGRESS","columns":["column_0","column_1","column_2","column_3"],"headers":["column_0","column_1","column_2","column_3"],"rowCount":3926,"success":true};
+            taskData = {
+                "id": 32,
+                "token": "zxlmsrmmlncrrqr",
+                "originFileName": "crawler_public_domain_crawling_info.csv",
+                "status": "IN_PROGRESS",
+                "columns": ["column_0", "column_1", "column_2", "column_3", "column_4", "column_5", "column_6", "column_7", "column_8", "column_9", "column_10", "column_11", "column_12", "column_13", "column_14", "column_15", "column_16", "column_17", "column_18", "column_19", "column_20", "column_21", "column_22", "column_23", "column_24", "column_25", "column_26", "column_27", "column_28", "column_29", "column_30", "column_31", "column_32", "column_33", "column_34", "column_35"],
+                "headers": ["291612", "33261", "1570048929", "1570048929", "1570049464", "200000", "5", "2", "true", "false", "false", "4598", "719", "0", "1755", "0", "4598", "719", "0", "1755", "0", "true", "0", "0", "", "0", "0", "0", "1992", "3505", "925", "46", "0", "0", "1570049460", ""],
+                "rowCount": 7587,
+                "success": true
+            };
 
-            taskData = testTaskData;
-            initHeaderSelect();
+            // initHeaderSelect();
+        }
+
+        function applyHeaders() {
+            let headers = [];
+            const isNoHeaders = $('#noHeadersCheckBox').prop("checked");
+            const isCustomHeaders = $('#customHeadersCheckBox').prop("checked");
+
+            console.log(isNoHeaders, isCustomHeaders);
+
+            if(isNoHeaders){
+                headers = taskData.columns;
+            } else if(isCustomHeaders){
+                headers = getHeadersFromCustomHeadersTextArea()
+            }
+
+            if(headers.length > 0){
+                $.ajax({
+                    'type': 'POST',
+                    'url': '/task/updateHeaders/' + taskData.token,
+                    'contentType': 'application/json',
+                    'data': JSON.stringify(headers),
+                    'dataType': 'json',
+                    async: false,
+                    'success': function (response) {
+                        taskData = response;
+                    }
+                });
+            }
+
+            initProcessTask();
         }
 
         function initHeaderSelect() {
             stepper.to(2);
 
-            $("#fileHeaders").handsontable({
+            createHeadersTable("fileHeaders", taskData.headers);
+            createHeadersTable("noHeaders", taskData.columns);
+
+            $('.form-check-input').click(function () {
+                $('.form-check-input').prop("checked", false);
+                $(this).prop("checked", true);
+
+                const id = $(this).attr('id');
+
+                const classToEnable = id.replace('CheckBox', '');
+
+                $('.headerComponent').addClass('div_disabled');
+
+                $('.' + classToEnable+"Div").removeClass("div_disabled");
+            });
+
+            $('#customHeadersTextArea').on('change cut paste', function(e) {
+                changeCustomHeaderTable();
+            }).keypress(function(e) {
+                if (e.which !== 0 && e.altKey === false && e.ctrlKey === false && e.metaKey == false) {
+                    changeCustomHeaderTable();
+                }
+            });
+        }
+
+        function getHeadersFromCustomHeadersTextArea() {
+            const content = $('#customHeadersTextArea').val();
+
+            return content.split(',').filter(function (el) {
+                return el != null && el !== "";
+            });
+        }
+
+        function changeCustomHeaderTable() {
+            const headers = getHeadersFromCustomHeadersTextArea();
+
+            $('#customHeaders').show();
+            createHeadersTable("customHeaders", headers);
+        }
+
+        function createHeadersTable(id, headers) {
+            $("#" + id).handsontable({
                 data: [],
-                colHeaders: taskData.headers,
-                columns: taskData.columns,
-                rowHeaders: true,
+                colHeaders: headers,
+                columns: headers,
                 scrollH: 'auto',
                 scrollV: 'auto',
                 autoWrapRow: false,
@@ -203,7 +324,7 @@
 
         function initFinaUploader() {
             stepper.to(1);
-            if(manualUploader !== null){
+            if (manualUploader !== null) {
                 return
             }
             manualUploader = new qq.FineUploader({
@@ -228,12 +349,10 @@
                     }
                 },
                 callbacks: {
-                    onComplete: function(id, name, responseJSON, ) {
-                        if(responseJSON.token !== undefined){
+                    onComplete: function (id, name, responseJSON,) {
+                        if (responseJSON.token !== undefined) {
                             taskData = responseJSON;
                             initHeaderSelect();
-
-                            // processTask(responseJSON.token)
                         }
                     }
                 },
@@ -244,31 +363,34 @@
                 autoUpload: false
             });
 
-            qq(document.getElementById("trigger-upload")).attach("click", function() {
+            qq(document.getElementById("trigger-upload")).attach("click", function () {
                 manualUploader.uploadStoredFiles();
             });
         }
 
         // processTask("ymqeoxrgfhkbryb");
-        function processTask(token) {
+        function initProcessTask() {
+            stepper.to(3);
+
             $('#fineUploader').hide();
             $('#processProgressBar').show();
 
-            var socket = new SockJS('http://localhost:8090//ws');
+            var socket = new SockJS('http://]localhost:8090//ws');
             const stompClient = Stomp.over(socket);
-            stompClient.debug = function () {};
+            stompClient.debug = function () {
+            };
             stompClient.connect({}, function () {
-                stompClient.subscribe('/channel/app/parsingProgress/' + token, function (message) {
+                stompClient.subscribe('/channel/app/parsingProgress/' + taskData.token, function (message) {
                     if (!message.body) {
                         return;
                     }
 
                     const body = JSON.parse(message.body);
 
-                    if(body.status === "FINISHED"){
-                        window.location = "/task/" + token
-                    }else{
-                        const percent = (body.processedCount/(body.totalCount/100)).toFixed(2);
+                    if (body.status === "FINISHED") {
+                        window.location = "/task/" + taskData.token
+                    } else {
+                        const percent = (body.processedCount / (body.totalCount / 100)).toFixed(2);
 
                         $('#progress').css({width: percent + "%"});
                         $('#progressInfo').text(`${percent} %`);
@@ -276,7 +398,7 @@
                     }
                 });
 
-                $.get("/task/process/" + token)
+                $.get("/task/process/" + taskData.token)
             });
         }
     </script>
