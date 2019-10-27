@@ -59,11 +59,17 @@ public class TaskController {
 
     @GetMapping(value="/task/process/{token}", produces = { MediaType.TEXT_PLAIN_VALUE })
     @ResponseBody
-    public ResponseEntity<String> test(@PathVariable String token) throws IOException {
+    public ResponseEntity<String> test(@PathVariable String token) {
 
-        Task task = taskService.findByToken(token);
+        new Thread(() -> {
+            Task task = taskService.findByToken(token);
 
-        dbService.importData(task);
+            try {
+                dbService.importData(task);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }).start();
 
         return ResponseEntity.ok().body("");
     }

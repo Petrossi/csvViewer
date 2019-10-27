@@ -17,7 +17,7 @@ public class TableService extends AbstractService {
         if(tableExists(tableName)){
             return;
         }
-        String columnsSql = Arrays.stream(task.getHeaders())
+        String columnsSql = Arrays.stream(task.getColumns())
             .map(column -> column + " varchar(500)")
             .collect(Collectors.joining(",\n"))
             + " \n"

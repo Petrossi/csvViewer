@@ -2,7 +2,7 @@
 <div layout:fragment="content">
     <div class="row">
         <div class="col-md-12 col-md-offset-0 table-wrapper" id="fineUploader">
-            <div id="fine-uploader-manual-trigger"></div>
+            <!--<div id="fine-uploader-manual-trigger"></div>-->
         </div>
         <div class="col-md-12 col-md-offset-0 table-wrapper" id="processProgressBar" style="display:none;">
             <span>Processing file data <span id="processedCount"></span></span>
@@ -12,12 +12,59 @@
             </div>
         </div>
     </div>
+    <div class="row">
+        <div id="stepper1" class="bs-stepper">
+            <div class="bs-stepper-header" role="tablist">
+                <div class="step" data-target="#test-l-1">
+                    <button type="button" class="step-trigger" role="tab" id="stepper1trigger1" aria-controls="test-l-1">
+                        <span class="bs-stepper-circle">1</span>
+                        <span class="bs-stepper-label">Upload file</span>
+                    </button>
+                </div>
+                <div class="bs-stepper-line"></div>
+                <div class="step" data-target="#test-l-2">
+                    <button type="button" class="step-trigger" role="tab" id="stepper1trigger2" aria-controls="test-l-2">
+                        <span class="bs-stepper-circle">2</span>
+                        <span class="bs-stepper-label">Select headers</span>
+                    </button>
+                </div>
+                <div class="bs-stepper-line"></div>
+                <div class="step" data-target="#test-l-3">
+                    <button type="button" class="step-trigger" role="tab" id="stepper1trigger3" aria-controls="test-l-3">
+                        <span class="bs-stepper-circle">3</span>
+                        <span class="bs-stepper-label">Process</span>
+                    </button>
+                </div>
+            </div>
+            <div class="bs-stepper-content">
+                <div id="test-l-1" role="tabpanel" class="bs-stepper-pane" aria-labelledby="stepper1trigger1">
+                    <div id="fine-uploader-manual-trigger"></div>
+                    <!--<button class="btn btn-primary" onclick="stepper.next()">Next</button>-->
+                </div>
+                <div id="test-l-2" role="tabpanel" class="bs-stepper-pane" aria-labelledby="stepper1trigger2">
+                    <div class="form-group">
+                        <div id="fileHeaders" style="overflow: auto; vertical-align: top;" class="handsontable"></div>
+                    </div>
+                    <!--<button class="btn btn-primary" onclick="stepper.previous()">Previous</button>-->
+                    <!--<button class="btn btn-primary" onclick="stepper.next()">Next</button>-->
+                </div>
+                <div id="test-l-3" role="tabpanel" class="bs-stepper-pane text-center" aria-labelledby="stepper1trigger3">
+                    <button class="btn btn-primary mt-5" onclick="stepper.previous()">Previous</button>
+                    <button type="submit" class="btn btn-primary mt-5">Submit</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div layout:fragment="header_sources">
     <link th:href="@{/static/stylesheets/fine-uploader-new.css}" rel="stylesheet">
     <script th:src="@{/static/javascripts/all.fine-uploader.min.js}"></script>
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.0.0/sockjs.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bs-stepper/dist/js/bs-stepper.min.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bs-stepper/dist/css/bs-stepper.min.css">
 
     <style>
         .progress {
@@ -117,10 +164,91 @@
             width: 60%;
         }
     </style>
-
 </div>
 <div layout:fragment="body_sources">
+
     <script>
+        let stepper = null;
+        let manualUploader = null;
+        let taskData = null;
+
+        $(document).ready(function () {
+            stepper = new Stepper($('.bs-stepper')[0])
+            // initHeaderSelect()
+            // initFinaUploader()
+            test()
+        });
+
+        function test() {
+            var testTaskData = {"id":29,"token":"eyzqztvvajpqeln","originFileName":"newLTT_disavow_black_donor_domain.csv","status":"IN_PROGRESS","columns":["column_0","column_1","column_2","column_3"],"headers":["column_0","column_1","column_2","column_3"],"rowCount":3926,"success":true};
+
+            taskData = testTaskData;
+            initHeaderSelect();
+        }
+
+        function initHeaderSelect() {
+            stepper.to(2);
+
+            $("#fileHeaders").handsontable({
+                data: [],
+                colHeaders: taskData.headers,
+                columns: taskData.columns,
+                rowHeaders: true,
+                scrollH: 'auto',
+                scrollV: 'auto',
+                autoWrapRow: false,
+                stretchH: 'all',
+            });
+        }
+
+        function initFinaUploader() {
+            stepper.to(1);
+            if(manualUploader !== null){
+                return
+            }
+            manualUploader = new qq.FineUploader({
+                element: document.getElementById('fine-uploader-manual-trigger'),
+                template: 'qq-template-manual-trigger',
+                request: {
+                    endpoint: '/uploads'
+                },
+                thumbnails: {
+                    placeholders: {
+                        waitingPath: 'https://fineuploader.com/source/placeholders/waiting-generic.png',
+                        notAvailablePath: 'https://fineuploader.com/source/placeholders/not_available-generic.png'
+                    }
+                },
+                chunking: {
+                    enabled: true,
+                    concurrent: {
+                        enabled: true
+                    },
+                    success: {
+                        endpoint: '/chunksdone'
+                    }
+                },
+                callbacks: {
+                    onComplete: function(id, name, responseJSON, ) {
+                        if(responseJSON.token !== undefined){
+                            taskData = responseJSON;
+                            initHeaderSelect();
+
+                            // processTask(responseJSON.token)
+                        }
+                    }
+                },
+                validation: {
+                    itemLimit: 1,
+                    allowedExtensions: ['txt', 'csv', 'tsv']
+                },
+                autoUpload: false
+            });
+
+            qq(document.getElementById("trigger-upload")).attach("click", function() {
+                manualUploader.uploadStoredFiles();
+            });
+        }
+
         // processTask("ymqeoxrgfhkbryb");
         function processTask(token) {
             $('#fineUploader').hide();
@@ -151,46 +279,6 @@
                 $.get("/task/process/" + token)
             });
         }
-    </script>
-    <script>
-        const manualUploader = new qq.FineUploader({
-            element: document.getElementById('fine-uploader-manual-trigger'),
-            template: 'qq-template-manual-trigger',
-            request: {
-                endpoint: '/uploads'
-            },
-            thumbnails: {
-                placeholders: {
-                    waitingPath: 'https://fineuploader.com/source/placeholders/waiting-generic.png',
-                    notAvailablePath: 'https://fineuploader.com/source/placeholders/not_available-generic.png'
-                }
-            },
-            chunking: {
-                enabled: true,
-                concurrent: {
-                    enabled: true
-                },
-                success: {
-                    endpoint: '/chunksdone'
-                }
-            },
-            callbacks: {
-                onComplete: function(id, name, responseJSON, ) {
-                    if(responseJSON.token !== undefined){
-                        processTask(responseJSON.token)
-                    }
-                }
-            },
-            validation: {
-                itemLimit: 1,
-                allowedExtensions: ['txt', 'csv', 'tsv']
-            },
-            autoUpload: false
-        });
-
-        qq(document.getElementById("trigger-upload")).attach("click", function() {
-            manualUploader.uploadStoredFiles();
-        });
     </script>
 </div>
 </html>

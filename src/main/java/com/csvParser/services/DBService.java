@@ -72,7 +72,7 @@ public class DBService extends AbstractService {
         Task task = taskService.findByToken(config.getToken());
 
         SQLBuilder builder = new SQLBuilder()
-            .setSelect(Arrays.stream(task.getHeaders()).collect(Collectors.joining(",")))
+            .setSelect(Arrays.stream(task.getColumns()).collect(Collectors.joining(",")))
             .setFromTable(task.getToken())
             .setFromSchema(TASK_STORE_SCHEMA_NAME)
             .setFromTableAlias("t")
@@ -83,7 +83,7 @@ public class DBService extends AbstractService {
             builder.setOffset( config.getPageSize() * (config.getPage() - 1));
         }
 
-        JSONArray summary = getColumnsList(builder.buildSql(), Arrays.asList(task.getHeaders()));
+        JSONArray summary = getColumnsList(builder.buildSql(), Arrays.asList(task.getColumns()));
 
         int totalCount = getTotalCount(task);
         int filteredCount = summary.length();

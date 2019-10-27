@@ -29,7 +29,10 @@ public class Task {
 
     private STATUS status;
 
-    @Column(name = "subject", columnDefinition = "text[]")
+    @Column(columnDefinition = "text[]")
+    private String[] columns;
+
+    @Column(columnDefinition = "text[]")
     private String[] headers;
 
     private long rowCount;
@@ -84,5 +87,12 @@ public class Task {
     }
     public void setRowCount(long rowCount) {
         this.rowCount = rowCount;
+    }
+
+    public String[] getColumns() {
+        return columns;
+    }
+    public void setColumns(String[] columns) {
+        this.columns = columns;
     }
 }

@@ -21,10 +21,10 @@ public class TaskImporterService extends AbstractService {
     public void insertData(Task task, List<String []> data){
         String tableName = TASK_STORE_SCHEMA_NAME +"."+task.getToken();
 
-        String valuesSql = IntStream.range(0, task.getHeaders().length).mapToObj(i -> "?").collect(Collectors.joining(",")) + " \n";
-        String columnsSql = Arrays.stream(task.getHeaders()).collect(Collectors.joining(",")) + " \n";
+        String valuesSql = IntStream.range(0, task.getColumns().length).mapToObj(i -> "?").collect(Collectors.joining(",")) + " \n";
+        String columnsSql = Arrays.stream(task.getColumns()).collect(Collectors.joining(",")) + " \n";
         String insertString = "INSERT INTO "+tableName+"(" + columnsSql + ") values("+valuesSql+")";
-        int headersSize =  task.getHeaders().length;
+        int columnsCount =  task.getColumns().length;
 
         try{
             jdbcTemplate.batchUpdate(insertString, new BatchPreparedStatementSetter() {
@@ -32,7 +32,7 @@ public class TaskImporterService extends AbstractService {
                 public void setValues(PreparedStatement ps, int itemIndex) throws SQLException {
                     String [] currentData = data.get(itemIndex);
 
-                    for (int i = 0; i < headersSize; i++) {
+                    for (int i = 0; i < columnsCount; i++) {
                         String data = "";
                         try {
                             data = (i >= currentData.length) ? "" : currentData[i];
@@ -54,6 +54,5 @@ public class TaskImporterService extends AbstractService {
             e.printStackTrace();
             System.out.println(e);
         }
-
     }
 }

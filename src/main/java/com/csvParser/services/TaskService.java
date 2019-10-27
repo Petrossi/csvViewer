@@ -34,14 +34,18 @@ public class TaskService {
 
         storageService.moveToFinalDir(task, uuid, fileName);
 
-        int size = dbService.getFistRow(task.getToken()).length;
+        String[] firstRow = dbService.getFistRow(task.getToken());
+
+        int size = firstRow.length;
+
         List<String> g = IntStream.range(0, size).boxed().collect(Collectors.toList()).stream().map(i -> "column_" + i).map(String::valueOf).collect(Collectors.toList());
 
         long rowCount = dbService.getFileRowCount(task.getToken());
         task.setRowCount(rowCount);
         String[] headers = new String[g.size()];
         headers = g.toArray(headers);
-        task.setHeaders(headers);
+        task.setColumns(headers);
+        task.setHeaders(firstRow);
 
         taskRepository.save(task);
 
