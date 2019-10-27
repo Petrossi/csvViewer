@@ -59,10 +59,10 @@
             };
 
             const headers = [[${task.headers}]];
-            const columns = headers.map((columnName) => {return {data: columnName}});
+            const columns = [[${task.columns}]].map((columnName) => {return {data: columnName}});
 
             $( document ).ready(function () {
-                rendesSizesSelect();
+                renderSizesSelect();
                 init()
             });
 
@@ -104,7 +104,7 @@
                 }, 300);
             }
 
-            function rendesSizesSelect(){
+            function renderSizesSelect(){
                 const sizes = [10, 50, 100, 250, 500];
                 const sizesHtml = sizes.map(size => {
                     const selected = paginationInfo.pageSize === size;

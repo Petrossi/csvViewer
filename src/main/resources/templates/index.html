@@ -1,24 +1,11 @@
-<html layout:decorator="core/layout" xmlns:layout="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.w3.org/1999/xhtml">
+<html layout:decorator="core/layout" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <div layout:fragment="content">
-    <div class="row">
-        <div class="col-md-12 col-md-offset-0 table-wrapper" id="fineUploader">
-            <!--<div id="fine-uploader-manual-trigger"></div>-->
-        </div>
-        <div class="col-md-12 col-md-offset-0 table-wrapper" id="processProgressBar" style="display:none;">
-            <span>Processing file data <span id="processedCount"></span></span>
-            <div class="progress">
-                <div class="progress-bar" style="width: 0;" id="progress"></div>
-                <span id="progressInfo">0%</span>
-            </div>
-        </div>
-    </div>
+
     <div class="row">
         <div id="stepper1" class="bs-stepper">
             <div class="bs-stepper-header" role="tablist">
                 <div class="step" data-target="#test-l-1">
-                    <button type="button" class="step-trigger" role="tab" id="stepper1trigger1"
-                            aria-controls="test-l-1">
+                    <button type="button" class="step-trigger" role="tab" id="stepper1trigger1" aria-controls="test-l-1">
                         <span class="bs-stepper-circle">1</span>
                         <span class="bs-stepper-label">Upload file</span>
                     </button>
@@ -33,8 +20,7 @@
                 </div>
                 <div class="bs-stepper-line"></div>
                 <div class="step" data-target="#test-l-3">
-                    <button type="button" class="step-trigger" role="tab" id="stepper1trigger3"
-                            aria-controls="test-l-3">
+                    <button type="button" class="step-trigger" role="tab" id="stepper1trigger3" aria-controls="test-l-3">
                         <span class="bs-stepper-circle">3</span>
                         <span class="bs-stepper-label">Process</span>
                     </button>
@@ -55,11 +41,12 @@
                         <div id="noHeaders" style="overflow: auto; vertical-align: top;" class="handsontable"></div>
                     </div>
 
-                   <div class="row fileHeadersDiv" style="padding-top: 25px">
-                       <div class="form-check">
-                           <input class="form-check-input" type="checkbox" value="" id="fileHeadersCheckBox">
-                           <label class="form-check-label" for="fileHeadersCheckBox">Headers from file (first line from file)</label>
-                       </div>
+                    <div class="row fileHeadersDiv" style="padding-top: 25px">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" value="" id="fileHeadersCheckBox">
+                            <label class="form-check-label" for="fileHeadersCheckBox">Headers from file (first line from
+                                file)</label>
+                        </div>
                     </div>
                     <div class="row fileHeadersDiv div_disabled headerComponent" style="padding-top: 15px">
                         <div id="fileHeaders" style="overflow: auto; vertical-align: top;" class="handsontable"></div>
@@ -68,24 +55,31 @@
                     <div class="row" style="padding-top: 25px">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox" value="" id="customHeadersCheckBox">
-                            <label class="form-check-label" for="customHeadersCheckBox">Custom headers (comma separated)</label>
+                            <label class="form-check-label" for="customHeadersCheckBox">Custom headers (comma
+                                separated)</label>
                         </div>
                     </div>
                     <div class="row customHeadersDiv div_disabled headerComponent" style="padding-top: 5px">
                         <div class="form-group">
                             <textarea class="form-control" id="customHeadersTextArea" rows="3"></textarea>
                         </div>
-                        <div id="customHeaders" style="overflow: auto; vertical-align: top;display: none" class="handsontable"></div>
+                        <div id="customHeaders" style="overflow: auto; vertical-align: top;display: none"
+                             class="handsontable"></div>
                     </div>
 
                     <div class="row" style="padding-top: 10px">
-                        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="applyHeaders()">Apply</button>
+                        <button type="button" class="btn btn-primary btn-lg btn-block" onclick="applyHeaders()">Apply
+                        </button>
                     </div>
                 </div>
-                <div id="test-l-3" role="tabpanel" class="bs-stepper-pane text-center"
-                     aria-labelledby="stepper1trigger3">
-                    <button class="btn btn-primary mt-5" onclick="stepper.previous()">Previous</button>
-                    <button type="submit" class="btn btn-primary mt-5">Submit</button>
+                <div id="test-l-3" role="tabpanel" class="bs-stepper-pane text-center" aria-labelledby="stepper1trigger3">
+                    <div class="col-md-12 col-md-offset-0 table-wrapper" id="processProgressBar">
+                        <span>Processing file data <span id="processedCount"></span></span>
+                        <div class="progress">
+                            <div class="progress-bar" style="width: 0;" id="progress"></div>
+                            <span id="progressInfo">0%</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -224,16 +218,17 @@
 
         function test() {
             taskData = {
-                "id": 32,
-                "token": "zxlmsrmmlncrrqr",
-                "originFileName": "crawler_public_domain_crawling_info.csv",
+                "id": 34,
+                "token": "xzmihzjoyikruig",
+                "originFileName": "newLTT_disavow_black_donor_domain.csv",
                 "status": "IN_PROGRESS",
-                "columns": ["column_0", "column_1", "column_2", "column_3", "column_4", "column_5", "column_6", "column_7", "column_8", "column_9", "column_10", "column_11", "column_12", "column_13", "column_14", "column_15", "column_16", "column_17", "column_18", "column_19", "column_20", "column_21", "column_22", "column_23", "column_24", "column_25", "column_26", "column_27", "column_28", "column_29", "column_30", "column_31", "column_32", "column_33", "column_34", "column_35"],
-                "headers": ["291612", "33261", "1570048929", "1570048929", "1570049464", "200000", "5", "2", "true", "false", "false", "4598", "719", "0", "1755", "0", "4598", "719", "0", "1755", "0", "true", "0", "0", "", "0", "0", "0", "1992", "3505", "925", "46", "0", "0", "1570049460", ""],
-                "rowCount": 7587,
-                "success": true
+                "columns": ["column_0", "column_1", "column_2", "column_3"],
+                "headers": ["1", "4us.com.ua", "6", "1499249520"],
+                "rowCount": 3926,
+                "success": false
             };
 
+            initProcessTask();
             // initHeaderSelect();
         }
 
@@ -244,13 +239,13 @@
 
             console.log(isNoHeaders, isCustomHeaders);
 
-            if(isNoHeaders){
+            if (isNoHeaders) {
                 headers = taskData.columns;
-            } else if(isCustomHeaders){
+            } else if (isCustomHeaders) {
                 headers = getHeadersFromCustomHeadersTextArea()
             }
 
-            if(headers.length > 0){
+            if (headers.length > 0) {
                 $.ajax({
                     'type': 'POST',
                     'url': '/task/updateHeaders/' + taskData.token,
@@ -283,12 +278,12 @@
 
                 $('.headerComponent').addClass('div_disabled');
 
-                $('.' + classToEnable+"Div").removeClass("div_disabled");
+                $('.' + classToEnable + "Div").removeClass("div_disabled");
             });
 
-            $('#customHeadersTextArea').on('change cut paste', function(e) {
+            $('#customHeadersTextArea').on('change cut paste', function (e) {
                 changeCustomHeaderTable();
-            }).keypress(function(e) {
+            }).keypress(function (e) {
                 if (e.which !== 0 && e.altKey === false && e.ctrlKey === false && e.metaKey == false) {
                     changeCustomHeaderTable();
                 }
@@ -368,17 +363,12 @@
             });
         }
 
-        // processTask("ymqeoxrgfhkbryb");
         function initProcessTask() {
             stepper.to(3);
 
-            $('#fineUploader').hide();
-            $('#processProgressBar').show();
-
-            var socket = new SockJS('http://]localhost:8090//ws');
+            const socket = new SockJS('http://localhost:8090//ws');
             const stompClient = Stomp.over(socket);
-            stompClient.debug = function () {
-            };
+            stompClient.debug = function () {};
             stompClient.connect({}, function () {
                 stompClient.subscribe('/channel/app/parsingProgress/' + taskData.token, function (message) {
                     if (!message.body) {
