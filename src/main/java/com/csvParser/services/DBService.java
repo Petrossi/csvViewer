@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.io.File;
 
 import static com.csvParser.services.TableService.TASK_STORE_SCHEMA_NAME;
 
@@ -119,8 +120,12 @@ public class DBService extends AbstractService {
         return getCountBySql(sql);
     }
 
-    private CSVReader getReader(String fileName) throws FileNotFoundException {
-        return new CSVReader(new FileReader(storageService.getFinalPath().resolve(fileName).toFile()));
+    public CSVReader getReader(String fileName) throws FileNotFoundException {
+        return new CSVReader(new FileReader(getFinalFile(fileName)));
+    }
+
+    public File getFinalFile(String fileName){
+        return storageService.getFinalPath().resolve(fileName).toFile();
     }
 
     public long getFileRowCount(String fileName) throws IOException {
@@ -144,7 +149,7 @@ public class DBService extends AbstractService {
         int i = 0;
         while ((nextLine = reader.readNext()) != null) {
             i++;
-            if(i == 0 && task.isIgnoreFirstRow()){
+            if(i == 1 && task.isIgnoreFirstRow()){
                 continue;
             }
             data.add(nextLine);

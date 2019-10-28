@@ -3,6 +3,7 @@ package com.csvParser;
 import com.csvParser.config.WebSocketConfig;
 import com.csvParser.services.DBService;
 import com.csvParser.services.TaskService;
+import liquibase.util.csv.CSVReader;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
@@ -30,12 +31,25 @@ public class Application {
 
 		context = SpringApplication.run(Application.class, args);
 
+//        read();
 //        test();
 	}
 
 	private static void test(){
 		try {
 			context.getBean(DBService.class).importData(context.getBean(TaskService.class).findByToken("weibtuowcokgono"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	private static void read(){
+		String token = "bftjzvcdwtlqman";
+		try {
+			CSVReader reader = context.getBean(DBService.class).getReader(token);
+
+			String [] nextLine = reader.readNext();
+			System.out.println(nextLine);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
