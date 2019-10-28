@@ -1,7 +1,7 @@
 package com.csvParser.models;
 
 import com.csvParser.hibernate.StringArrayType;
-//import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.annotations.TypeDef;
 import org.hibernate.annotations.TypeDefs;
 
@@ -20,7 +20,7 @@ public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-//    @JsonIgnore
+    @JsonIgnore
     private Long id;
 
     private String token;
@@ -36,6 +36,8 @@ public class Task {
     private String[] headers;
 
     private long rowCount;
+
+    private boolean ignoreFirstRow;
 
     @Transient
     private boolean success;
@@ -94,5 +96,12 @@ public class Task {
     }
     public void setColumns(String[] columns) {
         this.columns = columns;
+    }
+
+    public boolean isIgnoreFirstRow() {
+        return ignoreFirstRow;
+    }
+    public void setIgnoreFirstRow(boolean ignoreFirstRow) {
+        this.ignoreFirstRow = ignoreFirstRow;
     }
 }

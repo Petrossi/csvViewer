@@ -142,8 +142,12 @@ public class DBService extends AbstractService {
 
         List<String []> data = new ArrayList<>();
         String [] nextLine;
-
+        int i = 0;
         while ((nextLine = reader.readNext()) != null) {
+            i++;
+            if(i == 0 && task.isIgnoreFirstRow()){
+                continue;
+            }
             data.add(nextLine);
 
             if(data.size() == batchCount){
