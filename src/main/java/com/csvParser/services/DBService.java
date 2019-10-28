@@ -136,7 +136,7 @@ public class DBService extends AbstractService {
         executeQuery("TRUNCATE TABLE "+TASK_STORE_SCHEMA_NAME+"."+task.getToken()+" CONTINUE IDENTITY RESTRICT;");
         String urlToSend = "/channel/app/parsingProgress/" + task.getToken();
 
-        int batchCount = 200;
+        int batchCount = 1000;
         int processedCount = 0;
         CSVReader reader = getReader(task.getToken());
 

@@ -52,8 +52,8 @@ logging:
   level:
     org:
       springframework:
-#        web: ERROR
-        web: DEBUG
+        web: ERROR
+#        web: DEBUG
 
         socket:
           config:
