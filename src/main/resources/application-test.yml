@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://127.0.0.1:5432/csvParser?useUnicode=yes&characterEncoding=UTF-8&autoReconnect=true
+    username: crawler
+    password: 6Al0sirE0#haDron
+
+proxy:
+  need-proxy: false
