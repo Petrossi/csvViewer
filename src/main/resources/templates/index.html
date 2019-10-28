@@ -370,7 +370,7 @@
         function initProcessTask() {
             stepper.to(3);
 
-            const socket = new SockJS('http://localhost:8090//ws');
+            const socket = new SockJS('/ws');
             const stompClient = Stomp.over(socket);
             stompClient.debug = function () {};
             stompClient.connect({}, function () {
