@@ -46,9 +46,7 @@ public class TaskService {
         task.setHeaders(firstRow);
         task.setIgnoreFirstRow(true);
 
-        taskRepository.save(task);
-
-        return task;
+        return save(task);
     }
 
     public String[] generateColumns(int size){
@@ -79,5 +77,10 @@ public class TaskService {
         taskRepository.save(task);
 
         return task;
+    }
+
+    public Task save(Task task) {
+
+        return taskRepository.save(task);
     }
 }

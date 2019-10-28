@@ -168,6 +168,9 @@ public class DBService extends AbstractService {
         }
 
         messagingTemplate.convertAndSend(urlToSend, new JSONObject().put("status", Task.STATUS.FINISHED).toString());
+
+        task.setStatus(Task.STATUS.FINISHED);
+        taskService.save(task);
     }
 
     public JSONArray getColumnsList(String sqlToGetData, List<String> columns){
