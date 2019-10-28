@@ -86,10 +86,9 @@ public class DBService extends AbstractService {
         JSONArray summary = getColumnsList(builder.buildSql(), Arrays.asList(task.getColumns()));
 
         int totalCount = getTotalCount(task);
-        int filteredCount = summary.length();
         int pages = 1;
         if( config.getPageSize() != -1){
-            if(filteredCount % config.getPageSize() == 0){
+            if(totalCount % config.getPageSize() == 0){
                 pages = totalCount/config.getPageSize();
             }else{
                 pages = totalCount/config.getPageSize() + 1;
