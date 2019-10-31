@@ -115,7 +115,7 @@
             }
 
             function renderPaginationInfo(data){
-                $('#requestInfo').text(`Showing ${(paginationInfo.page - 1 ) * paginationInfo.pageSize} to ${(paginationInfo.page ) * paginationInfo.pageSize} of ${data.totalCount}`);
+                $('#requestInfo').text(`Showing ${(paginationInfo.page - 1 ) * paginationInfo.pageSize} to ${(paginationInfo.page ) * paginationInfo.pageSize} of ${data.filteredCount}`);
             }
 
             function renderPaginationButtons(data){
