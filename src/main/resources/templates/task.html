@@ -1,24 +1,9 @@
 <html layout:decorator="core/layout" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
     <div layout:fragment="header_sources">
         <style>
-            .table-wrapper {
-                /*margin-top: 75px;*/
-            }
-
-            .buttons-wrapper {
-                display: flex;
-                margin-top: 25px;
-            }
-
-            .pagination-info-wrapper {
-                display: flex;
-                justify-content: space-between;
-                margin-bottom: 25px;
-            }
-
-            .buttons-wrapper button {
-                flex: 1;
-            }
+            .buttons-wrapper {display: flex;margin-top: 25px;}
+            .pagination-info-wrapper {display: flex;justify-content: space-between;margin-bottom: 25px;}
+            .buttons-wrapper button {flex: 1;}
         </style>
     </div>
 
@@ -26,12 +11,17 @@
         <div class="row">
             <div class="col-md-12 col-md-offset-0 table-wrapper" >
                 <div id="divSpinner"></div>
-
-                <div class="pagination-info-wrapper" id="paginationInfo" style="display: none">
-                    <p id="requestInfo"></p>
-                    <div></div>
-                    <select id="pageSizeSelect"></select>
+                <div class="row">
+                    <div class="pagination-info-wrapper" id="paginationInfo" style="display: none">
+                        <p id="requestInfo"></p>
+                        <div class="form-inline md-form mr-auto mb-4p">
+                            <input class="form-control mr-sm-4" id="searchString" type="text" placeholder="Search" aria-label="Search" style="width: 300px">
+                            <button class="btn btn-outline-secondary" id="searchButton" type="submit">Search</button>
+                        </div>
+                        <select id="pageSizeSelect"></select>
+                    </div>
                 </div>
+
                 <div id="taskData">
                     <div id="dataTable" style="overflow: auto; vertical-align: top;" class="handsontable"></div>
                 </div>
@@ -54,6 +44,7 @@
 
             let paginationInfo = {
                 pageSize: 250,
+                search: "",
                 page: 1,
                 token: token,
             };
@@ -82,12 +73,18 @@
 
             function init() {
                 showSpinner();
-                // return
                 const path = "/task/data/pagination/" + objectToQuerystring(paginationInfo);
+                $("#searchButton").click(() => {
+                    const value = $('#searchString').val();
+                    updatePaginationInfo({
+                        search: value
+                    });
+                });
                 $.get(path , (response) => {
                     processCsv(response);
                 })
             }
+
             function updatePaginationInfo(newPaginationInfoData) {
                 paginationInfo = Object.assign(paginationInfo, newPaginationInfoData);
                 console.log(newPaginationInfoData, paginationInfo);
@@ -135,21 +132,33 @@
                 })
             }
 
+            let handsontable = null;
+
             function showGrid(data) {
                 const dataTable = $("#dataTable");
-                dataTable.handsontable({
-                    data: data.summary,
-                    colHeaders: headers,
-                    columns: columns,
-                    rowHeaders: true,
-                    scrollH: 'auto',
-                    scrollV: 'auto',
-                    autoWrapRow: false,
-                    stretchH: 'all',
-                    height: 800
-                });
-                dataTable.handsontable("selectCell", 0, 0);
-                dataTable.handsontable("render");
+
+                if(handsontable == null){
+                    handsontable = dataTable.handsontable({
+                        data: data.summary,
+                        colHeaders: headers,
+                        columns: columns,
+                        rowHeaders: true,
+                        scrollH: 'auto',
+                        scrollV: 'auto',
+                        autoWrapRow: false,
+                        stretchH: 'all',
+                        height: 800,
+                        licenseKey: 'non-commercial-and-evaluation',
+                        // manualColumnResize: true,
+                        // filters: true,
+                        // dropdownMenu: true,
+                        // contextMenu: true,
+                    });
+                    dataTable.handsontable("selectCell", 0, 0);
+                    dataTable.handsontable("render");
+                }else{
+                    dataTable.handsontable("loadData", data.summary);
+                }
             }
         </script>
     </div>

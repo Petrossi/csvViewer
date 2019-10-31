@@ -84,15 +84,27 @@ public class DBService extends AbstractService {
             builder.setOffset( config.getPageSize() * (config.getPage() - 1));
         }
 
-        JSONArray summary = getColumnsList(builder.buildSql(), Arrays.asList(task.getColumns()));
-
         int totalCount = getTotalCount(task);
+        int filteredCount = totalCount;
+
+        if(!config.getSearch().equals("")){
+            String where = Arrays.stream(task.getColumns()).map(column -> column + " LIKE '%" + config.getSearch() + "%' ").collect(Collectors.joining(" OR "));
+
+            builder.setWhere(where);
+
+            filteredCount = getTotalCount(task, where);
+        }
+
+        String sql = builder.buildSql();
+
+        JSONArray summary = getColumnsList(sql, Arrays.asList(task.getColumns()));
+
         int pages = 1;
         if( config.getPageSize() != -1){
-            if(totalCount % config.getPageSize() == 0){
-                pages = totalCount/config.getPageSize();
+            if(filteredCount % config.getPageSize() == 0){
+                pages = filteredCount/config.getPageSize();
             }else{
-                pages = totalCount/config.getPageSize() + 1;
+                pages = filteredCount/config.getPageSize() + 1;
             }
         }
 
@@ -101,7 +113,7 @@ public class DBService extends AbstractService {
             "success",
             summary,
             totalCount,
-            summary.length(),
+            filteredCount,
             pages
         );
 
@@ -109,13 +121,22 @@ public class DBService extends AbstractService {
     }
 
     public int getTotalCount(Task task){
-        String sql = new SQLBuilder()
+        return getTotalCount(task, "");
+    }
+
+    public int getTotalCount(Task task, String where){
+        SQLBuilder builder = new SQLBuilder()
             .setSelect("count(*)")
             .setFromTable(task.getToken())
             .setFromSchema(TASK_STORE_SCHEMA_NAME)
             .setFromTableAlias("t")
-            .buildSql()
         ;
+
+        if(!where.equals("")){
+            builder.setWhere(where);
+        }
+
+        String sql = builder.buildSql();
 
         return getCountBySql(sql);
     }
